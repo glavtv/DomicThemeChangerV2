@@ -1,0 +1,434 @@
+/*use to convert in one-line https://daruse.ru/kompressor-html-koda-onlajn*/
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@200;300;400;500&display=swap');
+/* Style colours */ :root {
+  --dark-theme-bg: #0f0f0f;
+  --dark-theme-main: #171717;
+  --dark-theme-border-color: #242424;
+  --dark-theme-active-text-color: #DFDFDF;
+  --dark-theme-gray: #464646;
+  --dark-theme-light-gray: #585858;
+  --dark-theme-white-gray: #8C8C8C;
+  --dark-theme-red: #BF3330;
+  --dark-theme-score1: #fff;
+  --dark-theme-score2: #77C0FF;
+  --dark-theme-score3: #F00;
+  --dark-theme-link: #A822FF;
+  --auth-width: 190px;
+  --auth-input-height: 32px;
+  --auth-input-font-size: 14px;
+}
+/* a[href] unknown*/
+#content a[href] {
+  color: var(--dark-theme-link);
+  cursor: pointer;
+  font-weight: 200;
+  font-size: 16px;
+  text-decoration: none;
+  user-select: none;
+  padding-left: 0%;
+  padding-right: 0%;
+  -webkit-transition: all 0.1s ease;
+  -moz-transition: all 0.1s ease;
+  -o-transition: all 0.1s ease;
+  transition: all 0.1s ease;
+}
+/* Any links */
+#authorization a[href], #content a[href="upload/"], #upload-form + p + p a:nth-child(1) {
+  color: var(--dark-theme-active-text-color);
+  cursor: pointer;
+  font-weight: 200;
+  font-size: 16px;
+  margin: auto;
+  text-decoration: none;
+  user-select: none;
+  border-bottom: 1px solid #fff;
+  padding-bottom: 4px;
+  padding-left: 0%;
+  padding-right: 0%;
+  -webkit-transition: all 0.1s ease;
+  -moz-transition: all 0.1s ease;
+  -o-transition: all 0.1s ease;
+  transition: all 0.1s ease;
+}
+#content a[href="upload/"]:hover, #upload-form + p + p a:nth-child(1):hover {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+#authorization a[href]:hover {
+  border-bottom: 1px solid #fff;
+  padding-left: 6%;
+}
+/*Uploading files*/
+#upload-form #files tbody tr.fileholder td:nth-child(1) a {
+  color: var(--dark-theme-score2);
+  cursor: pointer;
+  font-weight: 200;
+  font-size: 16px;
+  margin: auto;
+  text-decoration: none;
+  user-select: none;
+  -webkit-transition: all 0.1s ease;
+  -moz-transition: all 0.1s ease;
+  -o-transition: all 0.1s ease;
+  transition: all 0.1s ease;
+}
+#upload-form #files input[type="submit"] {
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+/*Input Field Style*/
+#content input[type="text"],#content input[type="password"],
+#authorization input[type="text"],#authorization input[type="password"] {
+  margin-top: 8px;
+  margin-bottom: 6px;
+  width: var(--auth-width);
+  height: var(--auth-input-height);
+  border-radius: 2px;
+  padding-left: 8px;
+  padding-right: 8px;
+  color: #737373;
+  font-weight: 400;
+  font-size: var(--auth-input-font-size);
+  border: 2px solid rgba(12, 12, 13, 0.2);
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+#content input[type="text"]:focus ,#content input[type="password"]:focus,
+#authorization input[type="text"]:focus, #authorization input[type="password"]:focus {
+  color: #0c0c0d;
+  border: 2px solid #D0D0D0;
+  box-shadow: 0 0 0 1px #B3B3B3, 0 0 0 4px rgba(143, 143, 143, 0.3);
+}
+/* Buttom submit */
+input[type="submit"] {
+  height: var(--auth-input-height);
+  width: var(--auth-width);
+  margin-top: 15px;
+  margin-bottom: 4px;
+  font-size: var(--auth-input-font-size);
+  font-weight: 400;
+  color: #737373;
+  background-color: #fff;
+  display: inline-block;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.00);
+  -webkit-transition: all 0.1s ease;
+  -moz-transition: all 0.1s ease;
+  -o-transition: all 0.1s ease;
+  transition: all 0.1s ease;
+}
+input[type="submit"]:hover {
+  color: #fff;
+  background-color: #000;
+  border: 1px solid var(--dark-theme-border-color);
+}
+/* Select login type */
+select[name="idLoginAs"] {
+  height: var(--auth-input-height);
+  width: var(--auth-width);
+  margin-top: 10px;
+  margin-bottom: 4px;
+  padding-left: 4px;
+  font-size: var(--auth-input-font-size);
+  font-weight: 400;
+  color: #737373;
+  background-color: #fff;
+  display: inline-block;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.00);
+  -webkit-transition: all 0.1s ease;
+  -moz-transition: all 0.1s ease;
+  -o-transition: all 0.1s ease;
+  transition: all 0.1s ease;
+}
+select[name="idLoginAs"]:focus {
+  color: #000;
+  background-color: #fff;
+}
+/* half-hide useless text*/
+#authorization p small {
+  color: var(--dark-theme-gray);
+}
+/* hide useless iframe */
+iframe[src="2//student/index.html"] {
+  display: none;
+}
+/* Main Style */
+body {
+  font-family: 'Fira Sans', sans-serif;
+  background-color: var(--dark-theme-bg);
+  color: var(--dark-theme-active-text-color);
+}
+#authorization {
+  position: absolute !important;
+  border: 2px solid var(--dark-theme-border-color) !important;
+  background-color: var(--dark-theme-main);
+  width: var(--auth-width) !important;
+  left: 8px !important;
+  padding: 10px !important;
+}
+#authorization b {
+  color: var(--dark-theme-light-gray) !important;
+  font-size: 16px !important;
+  font-weight: 200 !important;
+}
+#content {
+  position: absolute !important;
+  width: calc(100% - (var(--auth-width) + 38px) - 30px) !important;
+  left: calc(var(--auth-width) + 30px) !important;
+  padding: 10px !important;
+  padding-left: 15px !important;
+  border: 2px solid var(--dark-theme-border-color) !important;
+  background-color: var(--dark-theme-main) !important;
+}
+#content #navbar a, #content #navbar {
+  color: var(--dark-theme-light-gray);
+  cursor: pointer;
+  font-weight: 200;
+  font-size: 16px;
+  text-decoration: none;
+  user-select: none;
+  padding-bottom: 4px;
+  padding-left: 0%;
+  padding-right: 0%;
+  -webkit-transition: all 0.1s ease;
+  -moz-transition: all 0.1s ease;
+  -o-transition: all 0.1s ease;
+  transition: all 0.1s ease;
+}
+#content #navbar a:hover, #content #navbar a.done:nth-last-child(1):hover {
+  color: var(--dark-theme-active-text-color);
+  padding-left: 4px;
+  padding-right: 6px;
+}
+#content #navbar a.done:nth-last-child(1) {
+  color: var(--dark-theme-white-gray);
+}
+#content #deadlines ul li {
+  color: var(--dark-theme-active-text-color);
+  font-weight: 200;
+  font-size: 14pt;
+}
+#content #deadlines ul li :not(a) {
+  color: var(--dark-theme-red);
+  font-weight: 400;
+  font-size: 12pt;
+  user-select: none;
+}
+#content #study-entity-list table tbody tr td:nth-child(1) {
+  color: var(--dark-theme-gray);
+  font-size: 16px;
+}
+#content #deadlines ul li a, #content #course-list ol li a:nth-child(1), #content #course-list ol li, #content #module-list table tbody tr td:nth-child(2) a, #content #study-entity-list table tbody tr td:nth-child(2) a {
+  color: var(--dark-theme-white-gray);
+  font-weight: 300;
+  font-size: 14pt;
+  text-decoration: none;
+  user-select: none;
+  padding-left: 0px;
+  padding-right: 0px;
+  -webkit-transition: all 0.1s ease;
+  -moz-transition: all 0.1s ease;
+  -o-transition: all 0.1s ease;
+  transition: all 0.1s ease;
+}
+#content #deadlines ul li a:hover, #content #course-list ol li a:nth-child(1):hover, #content #module-list table tbody tr td:nth-child(2) a:hover, #content #study-entity-list table tbody tr td:nth-child(2) a:hover {
+  color: var(--dark-theme-active-text-color);
+  margin-left: 5px;
+  padding-left: 10px;
+}
+#content #module-list table tbody tr td:nth-child(1) {
+  color: var(--dark-theme-white-gray);
+}
+#content #module-list table tbody tr td:nth-child(2) a {
+  margin-right: 60px;
+}
+#content #module-list table tbody tr td:nth-child(3) span span:nth-child(1) span:nth-child(1), #content #study-entity-list table tbody tr td:nth-child(3) span span:nth-child(1) span:nth-child(1) {
+  background-color: var(--dark-theme-red);
+}
+#content #module-list table tbody tr td:nth-child(3) span span:nth-child(2) span:nth-child(1), #content #module-list table tbody tr td:nth-child(3) span span:nth-child(2) span:nth-child(2), #content #module-list table tbody tr td:nth-child(3) span span:nth-child(2) span:nth-child(4), #content #study-entity-list table tbody tr td:nth-child(3) span span:nth-child(2) span:nth-child(1), #content #study-entity-list table tbody tr td:nth-child(3) span span:nth-child(2) span:nth-child(2), #content #study-entity-list table tbody tr td:nth-child(3) span span:nth-child(2) span:nth-child(4) {
+  background-color: var(--dark-theme-active-text-color);
+}
+#content #module-list table tbody tr td:nth-child(3) span span:nth-child(2) span:nth-child(3), #content #study-entity-list table tbody tr td:nth-child(3) span span:nth-child(2) span:nth-child(3) {
+  background-color: var(--dark-theme-red);
+}
+#content #course-list ol li a:nth-child(2) {
+  color: var(--dark-theme-white-gray);
+  font-weight: 200;
+  text-decoration: none;
+  user-select: none;
+}
+#content #course-list ol li a:nth-child(2):hover {
+  color: var(--dark-theme-active-text-color);
+}
+#content #course-list h4 {
+  color: var(--dark-theme-light-gray);
+  font-weight: 200;
+  font-size: 16px;
+}
+#content h2 {
+  color: var(--dark-theme-active-text-color);
+  font-size: 15pt;
+}
+#content #module-description div h2, #content #module-description div p, #content #module-description div ul li, #content #module-description div ul li a, #content #module-description div h3, #content #module-description div ol li, #content #module-description div table caption, #content #module-description div table tbody tr th, #content #module-description div table tbody tr td, #content #module-description div h4 {
+  font-family: 'Fira Sans', sans-serif;
+  color: #191919;
+}
+#content #module-description div ul li a {
+  color: #191919;
+  font-weight: 300;
+  text-decoration: none;
+  user-select: none;
+  border-bottom: 1px solid #191919;
+}
+#content #module-description div ul li a strong {
+  font-weight: 300;
+}
+#content #module-description div ul li {
+  margin: 12px;
+}
+#content #study-entity-list table tbody tr td:nth-child(2) span {
+  display: none;
+}
+/*Homework*/
+body #content h2 + h3 + h4 > a[href] {
+  color: var(--dark-theme-red);
+  font-weight: 300;
+  text-decoration: none;
+  user-select: none;
+  border-bottom: 1px solid var(--dark-theme-red);
+  padding-bottom: 4px;
+  padding-left: 0px;
+  padding-right: 0px;
+  -webkit-transition: all 0.1s ease;
+  -moz-transition: all 0.1s ease;
+  -o-transition: all 0.1s ease;
+  transition: all 0.1s ease;
+}
+#content #navbar + h2 + h3 + h4 > a:hover {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+#content #navbar + h2 + h3 {
+  color: var(--dark-theme-gray);
+  font-size: 12px;
+  font-weight: 400;
+}
+#content #navbar + h2 + h3 + h4 + p + div b {
+  color: var(--dark-theme-red);
+}
+#content #navbar + h2 + h3 + h4 + p + div + p + div + div p, #content #navbar + h2 + h3 + h4 + p + div + p + div + hr + div, #content #navbar + h2 + h3 + h4 + p + div + p + div + hr + div + div p, #content #navbar + h2 + h3 + h4 + p + div div {
+  color: #191919;
+  padding: 7px;
+}
+#content #navbar + h2 + h3 + h4 + p + div + :not(div) {
+  color: var(--dark-theme-active-text-color);
+}
+#content #navbar + h2 + h3 + h4 + p + div + p {
+  color: var(--dark-theme-gray);
+}
+#content #navbar + h2 + h3 + h4 + p + div div b, .student-comment {
+  color: #191919;
+  font-size: 16px;
+  font-weight: 400;
+}
+.student-comment {
+  color: var(--dark-theme-active-text-color);
+  padding-top: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-bottom: 4px;
+  background-color: var(--dark-theme-main);
+  border-left: 1px solid var(--dark-theme-gray);
+  border-right: 1px solid var(--dark-theme-gray);
+  border-radius: 4px;
+}
+.instructor-comment h4 {
+  font-weight: 400;
+}
+/*Score table*/
+#learningLevel {
+  border: 2px solid var(--dark-theme-border-color);
+}
+#learningLevel thead tr th {
+  font-family: 'Fira Sans', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: var(--dark-theme-white-gray);
+  background-color: var(--dark-theme-main);
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  -webkit-transition: all 0.1s ease;
+  -moz-transition: all 0.1s ease;
+  -o-transition: all 0.1s ease;
+  transition: all 0.1s ease;
+}
+#learningLevel thead tr th.stjsl-selected {
+  color: var(--dark-theme-active-text-color);
+  background-color: var(--dark-theme-gray);
+}
+#learningLevel tbody tr td span, #learningLevel tbody tr td a {
+  font-family: 'Fira Sans', sans-serif;
+  font-weight: 200;
+  font-size: 12pt;
+  padding: 3px;
+  -webkit-transition: all 0.1s ease;
+  -moz-transition: all 0.1s ease;
+  -o-transition: all 0.1s ease;
+  transition: all 0.1s ease;
+}
+#learningLevel tbody tr td a {
+  color: var(--dark-theme-score2);
+  text-decoration: none;
+  user-select: none;
+  cursor: pointer;
+}
+#learningLevel tbody tr {
+  font-family: 'Fira Sans', sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  -webkit-transition: all 0.1s ease;
+  -moz-transition: all 0.1s ease;
+  -o-transition: all 0.1s ease;
+  transition: all 0.1s ease;
+}
+#learningLevel tbody tr.stjsl-even {
+  color: var(--dark-theme-active-text-color);
+  background-color: var(--dark-theme-bg);
+}
+#learningLevel tbody tr.stjsl-odd {
+  color: var(--dark-theme-active-text-color);
+  background-color: var(--dark-theme-main);
+}
+#learningLevel tbody tr.hover {
+  color: var(--dark-theme-score2);
+}
+#content #upload-form #files tbody tr th {
+  font-weight: 100;
+}
+#content #course-list ol ::marker {
+  color: var(--dark-theme-light-gray) !important;
+}
+.instructor-comment {
+  background-color: var(--dark-theme-score2);
+  border-radius: 4px;
+}
+.instructor-comment h4 {
+  margin: 5px;
+  margin-left: 0px;
+  font-size: 14px;
+  font-weight: 300;
+}
+.instructor-comment p {
+  margin: 5px;
+  margin-left: 0px;
+}
+form textarea {
+  border-radius: 4px;
+}

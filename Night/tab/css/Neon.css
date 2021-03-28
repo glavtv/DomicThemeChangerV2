@@ -1,0 +1,81 @@
+:root {
+  --default-theme-accent: #36c;
+  --default-theme-border-rad: 2px;
+  --default-theme-white: #EFEFEF;
+  --default-theme-blue: #90ADFF;
+  --default-theme-gray: #CDCDCD;
+}
+/* Buttom submit */
+input[type="submit"] {
+  color: #1C65F7 !important;
+  border: 2px solid rgba(0, 0, 0, 0.00) !important;
+  border-radius: var(--default-theme-border-rad) !important;
+  background-color: var(--default-theme-white) !important;
+}
+input[type="submit"]:hover {
+  color: #fff !important;
+  background-color: #1C65F7 !important;
+  border: 2px solid var(--default-theme-accent) !important;
+  border-radius: var(--default-theme-border-rad) !important;
+  box-shadow: 0 0 0 1px #5D8EF0, 0 0 0 4px rgba(93, 142, 240, 0.30) !important;
+}
+/* Any links */
+#authorization a[href], #content a[href="upload/"], #upload-form + p + p a:nth-child(1) {
+  color: var(--default-theme-white) !important;
+  border-bottom: 1px solid var(--default-theme-accent) !important;
+}
+#authorization a[href]:hover {
+  color: #fff !important;
+}
+/*Input Field Style*/
+input[type="text"], input[type="password"] {
+  border-radius: var(--default-theme-border-rad) !important;
+  color: #737373;
+  border: 2px solid rgba(12, 12, 13, 0.2);
+}
+input[type="text"]:focus, input[type="password"]:focus {
+  border: 2px solid var(--default-theme-accent) !important;
+  box-shadow: 0 0 0 1px #5D8EF0, 0 0 0 4px rgba(93, 142, 240, 0.30) !important;
+}
+/* Deadlines */
+#content #deadlines ul li a, #content #course-list ol li a:nth-child(1), #content #course-list ol li, #content #module-list table tbody tr td:nth-child(2) a, #content #study-entity-list table tbody tr td:nth-child(2) a {
+  color: var(--default-theme-gray) !important;
+}
+#content #deadlines ul li a:hover, #content #course-list ol li a:nth-child(1):hover, #content #module-list table tbody tr td:nth-child(2) a:hover, #content #study-entity-list table tbody tr td:nth-child(2) a:hover {
+  color: var(--default-theme-blue) !important;
+}
+/* Content Headers */
+body #content #deadlines h3, body #content #course-list h3 {
+  color: var(--default-theme-accent) !important;
+}
+body #authorization, body #content {
+  border-radius: 4px !important;
+  border: 2px solid var(--default-theme-accent) !important;
+}
+#content #course-list ol li a:nth-child(2) {
+  font-weight: 300 !important;
+  color: #909EC7 !important;
+}
+#content #course-list ol li a:nth-child(2):hover {
+  color: var(--default-theme-blue) !important;
+}
+html body {
+  background-color: #1B1B1B !important;
+  color: var(--default-theme-white) !important;
+}
+#content h2 {
+  color: var(--default-theme-blue) !important;
+  font-weight: 100 !important;
+  font-size: 14pt !important;
+}
+#content #navbar a:hover, #content #navbar a.done:nth-last-child(1):hover {
+  color: var(--default-theme-blue) !important;
+}
+#content #module-list table tbody tr td:nth-child(3) span span:nth-child(1) span:nth-child(1), #content #study-entity-list table tbody tr td:nth-child(3) span span:nth-child(1) span:nth-child(1) {
+  background-color: var(--default-theme-blue) !important;
+}
+/*Homework*/
+body #content h2 + h3 + h4 > a[href] {
+  color: var(--default-theme-blue) !important;
+  border-bottom: 1px solid var(--default-theme-blue) !important;
+}
