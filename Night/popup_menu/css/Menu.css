@@ -178,3 +178,17 @@ select > option
 {
     margin-top: 40px;
 }
+
+
+
+
+
+
+
+
+
+.text-center span.navbar-text
+{
+    font-weight: 400;
+    font-size: 18px;
+}

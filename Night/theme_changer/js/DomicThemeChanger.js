@@ -1,84 +1,45 @@
-var check_ext = true,           //Кнопка-переключатель, расширение
-    check_icon = true,          //Кнопка-переключатель, иконка
-    check_title = true,         //Кнопка-переключатель, название
-    check_theme = true,         //Кнопка-переключатель, тема
-    text_icon = "",             //Текст, ссылка на иконку
-    text_title = "",            //Текст, название вкладки
-    text_theme = "",            //Текст, ссылка на тему
-    switch_theme = 1,           //Список, выбранная тема
-    cpicker_r = 255,            //Диапазон чисел, Rgb
-    cpicker_g = 255,            //Диапазон чисел, rGb
-	cpicker_b = 255,            //Диапазон чисел, rgB
-	num_layer_delay = 1500,     //Диапазон чисел, длительность перехода
-    num_layer_fadeout = 1000,   //Диапазон чисел, длительность затухания
-    menu_rgb = false;           //Переливание цветов
-
-var original_title = "domic.isu.ru",
-	OpenHomeworkPage = window.location.pathname,
-	jq_ready = false;
+var core_default = {
+    "ext_theme": 1,                 //Тема расширения 
+    "ext_ver": 2.2,                //Версия расширения
+    "check_ext": true,              //Кнопка-переключатель, расширение              
+    "check_icon": true,             //Кнопка-переключатель, иконка 
+    "check_title": true,            //Кнопка-переключатель, название
+    "check_theme": true,            //Кнопка-переключатель, тема
+    "check_layer": true,            //Кнопка-переключатель, подложка
+    "text_icon": "",                //Текст, ссылка на иконку    
+    "text_title": "",               //Текст, название вкладки
+    "text_theme": "",               //Текст, ссылка на тему
+    "text_loader": "",              //Текст, ссылка на gif-загрузку
+    "switch_theme": 1,              //Список, выбранная тема
+    "switch_loader": 1,             //Список, выбранная тема
+    "cpicker_r": 13,    
+    "cpicker_g": 110,    
+    "cpicker_b": 253,      
+    "num_layer_delay": 1500,        //Диапазон чисел, длительность перехода
+    "num_layer_fadeout": 1000,      //Диапазон чисел, длительность затухания
+    "menu_rgb": false,              //Переливание цветов
+    "menu_rotate_icon": false       //Крутящиеся иконки
+};
 
 var nj = $.noConflict(true),
-	myPort = browser.runtime.connect({name:"DarkDomic-Port"});
+	DTC_PORT = browser.runtime.connect({name:"DTC_PORT"}),
+	jq_ready = false,
+	OpenHomeworkPage = window.location.pathname,
+	original_title = "domic.isu.ru";
 
-
-myPort.onMessage.addListener(function(m) 
+DTC_PORT.onMessage.addListener(function(m) 
 {
-	NewData = m.greeting;
-	vars_update(NewData);
+	console.log("{DTC V2: TC}: Injected");
+
+	var UserData = m.greeting;
+
+	if (UserData != null)
+	{
+		core_default = UserData;
+	}
 
 	core_start();
 });
-
-function vars_update(NewData)
-{
-	if (NewData != null)
-	{
-		check_ext = NewData.check_ext;
-		check_icon = NewData.check_icon;
-		check_title = NewData.check_title;
-		check_theme = NewData.check_theme;
-		
-		text_icon = NewData.text_icon;
-		text_title = NewData.text_title;
-		text_theme = NewData.text_theme;
-		
-		switch_theme = NewData.switch_theme;
-		
-		cpicker_r = NewData.cpicker_r;
-		cpicker_g = NewData.cpicker_g;
-		cpicker_b = NewData.cpicker_b;
-
-		num_layer_delay = NewData.num_layer_delay;
-    	num_layer_fadeout = NewData.num_layer_fadeout;
-		
-		menu_rgb = NewData.menu_rgb;
-	}
-	else
-	{
-		check_ext = true;
-		check_icon = true;
-		check_title = true;
-		check_theme = true;
-		
-		text_icon = "";
-		text_title = "";
-		text_theme = "";
-		
-		switch_theme = 1;
-		
-		cpicker_r = 255;
-		cpicker_g = 255;
-		cpicker_b = 255;
-
-		num_layer_delay = 1500;
-    	num_layer_fadeout = 1000;
-		
-		menu_rgb = false;
-	}
-}
-
-
-
 
 nj(document).ready(function() 
 {
@@ -100,6 +61,8 @@ nj(document).ready(function()
 	});
 	
 });
+
+
 
 function core_start()
 {
@@ -131,7 +94,7 @@ function core_start()
 
 function core_run()
 {
-	if (check_ext == true)
+	if (core_default.check_ext == true)
 	{
 		core_apply();
     }
@@ -140,7 +103,7 @@ function core_run()
 		core_reset();
 	}
 
-	setTimeout(hide_load_layer, parseInt(num_layer_delay, 10));
+	setTimeout(hide_load_layer, parseInt(core_default.num_layer_delay, 10));
 }
 
 function core_reset()
@@ -166,9 +129,9 @@ function core_apply()
 	CssFix();
 
     //Custom Site Title
-	if (text_title != "" && text_title != null)
+	if (core_default.text_title != "" && core_default.text_title != null)
 	{
-		document.title = text_title;
+		document.title = core_default.text_title;
 	}
 	else
 	{
@@ -176,7 +139,7 @@ function core_apply()
 	}
 		
 	//Custom Icon
-	if (check_icon == true)
+	if (core_default.check_icon == true)
 	{
 		set_icon();
 	}
@@ -186,7 +149,7 @@ function core_apply()
 	}
 		
 	//Set Theme
-	if (check_theme == true)
+	if (core_default.check_theme == true)
 	{
 		set_theme();
 	}
@@ -206,13 +169,13 @@ function set_icon()
 		nj("#SiteIcon").remove();
 	}
 	
-	if (text_icon == "" || text_icon == null)
+	if (core_default.text_icon == "" || core_default.text_icon == null)
 	{
-		nj('head').prepend('<link id="SiteIcon" rel="shortcut icon" type="image/png" href="' + browser.runtime.getURL("src/load.gif") +'" />');
+		nj('head').prepend('<link id="SiteIcon" rel="shortcut icon" type="image/png" href="' + browser.runtime.getURL("assets/icons/load.gif") +'" />');
 	}
 	else
 	{
-		nj('head').prepend('<link id="SiteIcon" rel="shortcut icon" type="image/png" href="' + text_icon + '" />');
+		nj('head').prepend('<link id="SiteIcon" rel="shortcut icon" type="image/png" href="' + core_default.text_icon + '" />');
 	}
 }
 
@@ -223,7 +186,7 @@ function reset_icon()
 		nj("#SiteIcon").remove();
 	}
 			
-	nj('head').prepend('<link id="SiteIcon" rel="shortcut icon" type="image/png" href="' + browser.runtime.getURL("src/alpha.png") +'" />');
+	nj('head').prepend('<link id="SiteIcon" rel="shortcut icon" type="image/png" href="' + browser.runtime.getURL("assets/icons/alpha.png") +'" />');
 			
 	if (nj("#SiteIcon").length > 0)
 	{
@@ -234,30 +197,33 @@ function reset_icon()
 function set_theme()
 {
 	var href_path = "";
-	switch(switch_theme)
+	switch(parseInt(core_default.switch_theme, 10))
 	{
-		case "1":
+		case 1:
 		{
-			href_path = browser.runtime.getURL("tab/css/Dark.css");
+			href_path = browser.runtime.getURL("theme_changer/css/Light.css");
 			break;
 		}
-		case "2":
+		case 2:
 		{
-			href_path = browser.runtime.getURL("tab/css/Light.css");
+			href_path = browser.runtime.getURL("theme_changer/css/Dark.css");
 			break;
 		}
-		case "3":
+		case 3:
 		{
-			//href_path = browser.runtime.getURL("tab/css/Neon.css");
+			//href_path = browser.runtime.getURL("theme_changer/css/Neon.css");
 			break;
 		}
-		case "4":
+		case 4:
 		{
 			href_path = text_theme;
 			break;
 		}
 	}
 	
+	console.log(href_path);
+	console.log(core_default.switch_theme);
+
 	if( nj("head #DomicStyle").length < 1 && href_path != "" )
 	{
 		nj('<link>', {
@@ -297,7 +263,7 @@ function reset_theme()
 
 function hide_load_layer()
 {
-    nj("#DTC-Window").fadeOut(parseInt(num_layer_fadeout, 10), function()
+    nj("#DTC-Window").fadeOut(parseInt(core_default.num_layer_fadeout, 10), function()
 	{
 		nj("#DTC-Window").remove();
 	});
@@ -315,11 +281,7 @@ function auto_clean()
 function CssFix()
 {
 	var student = OpenHomeworkPage.match(/\bstudent\b/i),
-	entity = OpenHomeworkPage.match(/\bentity\b/i),
-	content = OpenHomeworkPage.match(/\bcontent\b/i),
-	html_page_opened = OpenHomeworkPage.match(/\b.html\b/i),
-	res = OpenHomeworkPage.match(/\bres\b/i),
-	sim = OpenHomeworkPage.match(/\bsim\b/i);
+	entity = OpenHomeworkPage.match(/\bentity\b/i);
 
 	if (student != null && entity != null && OpenHomeworkPage.length < 24)
 	{
@@ -410,7 +372,7 @@ function fix_session()
 		}
 		else
 		{
-			setTimeout(hide_load_layer, parseInt(num_layer_delay, 10));
+			setTimeout(hide_load_layer, parseInt(core_default.num_layer_delay, 10));
 		}
 	}
 }
