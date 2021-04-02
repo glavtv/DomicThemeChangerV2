@@ -49,6 +49,10 @@ nj(document).ready(function()
 	}
 	else
 	{
+		if (OpenHomeworkPage == "/student/")
+		{
+			DeadlineList();
+		}
 		jq_ready = true;
 		core_start();
 	}
@@ -221,8 +225,8 @@ function set_theme()
 		}
 	}
 	
-	console.log(href_path);
-	console.log(core_default.switch_theme);
+	//console.log(href_path);
+	//console.log(core_default.switch_theme);
 
 	if( nj("head #DomicStyle").length < 1 && href_path != "" )
 	{
@@ -375,4 +379,63 @@ function fix_session()
 			setTimeout(hide_load_layer, parseInt(core_default.num_layer_delay, 10));
 		}
 	}
+}
+
+//Подписка на деды
+
+
+function DeadlineList()
+{
+	
+	var ddline_list = {
+		data_count: 0,
+		mass_y: [],
+		mass_m: [],
+		mass_d: [],
+		mass_koef: [],
+		mass_text: [],
+		mass_push_count: []
+	};
+
+	if (nj( '#deadlines ul li' ).length < 1)
+	{
+		console.log("{DTC V2: DP}: Deadline list empty");
+		return 0;
+	}
+
+	console.log( "{DTC V2: DP}: Count - " + nj( '#deadlines ul li' ).length);
+
+		ddline_list.data_count = nj( '#deadlines ul li' ).length;
+
+		nj( '#deadlines ul li' ).each(function (index, value)
+		{
+			var rawText = nj(this).text(),
+				ddline_y = null,
+				ddline_m = null,
+				ddline_d = null,
+				ddline_coeff = null,
+				ddline_text = null;
+			
+			var start_c = rawText.indexOf("("),
+				end_c = rawText.indexOf(")");
+
+			ddline_coeff = rawText.substr( start_c + 1 , (end_c - start_c - 1));
+
+			ddline_text = rawText.substr( rawText.indexOf("—") + 2 );
+			ddline_text = ddline_text.substr( 0 , ddline_text.length - 8 );
+
+			ddline_y = rawText.substr( 8, 4 );
+			ddline_m = rawText.substr( 13, 2 );
+			ddline_d = rawText.substr( 16, 2 );
+			
+			ddline_list.mass_y.push(ddline_y);
+			ddline_list.mass_m.push(ddline_m);
+			ddline_list.mass_d.push(ddline_d);
+			ddline_list.mass_koef.push(ddline_coeff);
+			ddline_list.mass_text.push(ddline_text);
+			ddline_list.mass_push_count.push(0);
+		});
+
+		//console.log(ddline_list);
+		DTC_PORT.postMessage({greeting: ddline_list});
 }

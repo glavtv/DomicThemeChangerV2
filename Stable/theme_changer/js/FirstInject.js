@@ -1,5 +1,5 @@
 document.addEventListener ("DOMContentLoaded", load_layer);
-var DTC_PORT = browser.runtime.connect({name:"DTC_PORT"});
+var DTC_PORT = chrome.runtime.connect({name:"DTC_PORT"});
 
 var core_default = {
     "ext_theme": 1,                 //Тема расширения 
@@ -109,7 +109,7 @@ function load_layer()
 		
 	if (loader_gif == "" || loader_gif == null)
 	{
-		div.innerHTML = "<div class=\"DTC-Window-Center\"> <img src=\"" + browser.runtime.getURL("assets/icons/load.gif")+"\" alt=\"\"/> </div>";
+		div.innerHTML = "<div class=\"DTC-Window-Center\"> <img src=\"" + chrome.runtime.getURL("assets/icons/load.gif")+"\" alt=\"\"/> </div>";
 	}
 	else
 	{

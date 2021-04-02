@@ -15,4 +15,4 @@ function GetNewSettings()
 	return LoadedUserData;
 }
 
-browser.runtime.onConnect.addListener(Сonnect);
+chrome.runtime.onConnect.addListener(Сonnect);

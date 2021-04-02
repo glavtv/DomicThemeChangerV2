@@ -25,6 +25,10 @@ var RGB_CHECK = null;
 
 $(document).ready(function() 
 {
+
+    //Страница подписки на уведомления
+    $('a[rel=external]').attr('href', chrome.runtime.getURL("popup_menu/subscribe_page.html"));
+
     load();
 
     $('#Main-Head > div').on('click', function(e)
