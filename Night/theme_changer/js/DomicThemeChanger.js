@@ -22,7 +22,7 @@ var core_default = {
 };
 
 var nj = $.noConflict(true),
-	DTC_PORT = browser.runtime.connect({name:"DTC_PORT"}),
+	DTC_PORT = chrome.runtime.connect({name:"DTC_PORT"}),
 	jq_ready = false,
 	OpenHomeworkPage = window.location.pathname,
 	original_title = "domic.isu.ru";
@@ -175,7 +175,7 @@ function set_icon()
 	
 	if (core_default.text_icon == "" || core_default.text_icon == null)
 	{
-		nj('head').prepend('<link id="SiteIcon" rel="shortcut icon" type="image/png" href="' + browser.runtime.getURL("assets/icons/load.gif") +'" />');
+		nj('head').prepend('<link id="SiteIcon" rel="shortcut icon" type="image/png" href="' + chrome.runtime.getURL("assets/icons/load.gif") +'" />');
 	}
 	else
 	{
@@ -190,7 +190,7 @@ function reset_icon()
 		nj("#SiteIcon").remove();
 	}
 			
-	nj('head').prepend('<link id="SiteIcon" rel="shortcut icon" type="image/png" href="' + browser.runtime.getURL("assets/icons/alpha.png") +'" />');
+	nj('head').prepend('<link id="SiteIcon" rel="shortcut icon" type="image/png" href="' + chrome.runtime.getURL("assets/icons/alpha.png") +'" />');
 			
 	if (nj("#SiteIcon").length > 0)
 	{
@@ -200,33 +200,36 @@ function reset_icon()
 
 function set_theme()
 {
+	//console.log(core_default.switch_theme);
+	//console.log(core_default.text_theme);
+
+
 	var href_path = "";
 	switch(parseInt(core_default.switch_theme, 10))
 	{
 		case 1:
 		{
-			href_path = browser.runtime.getURL("theme_changer/css/Light.css");
+			href_path = chrome.runtime.getURL("theme_changer/css/Light.css");
 			break;
 		}
 		case 2:
 		{
-			href_path = browser.runtime.getURL("theme_changer/css/Dark.css");
+			href_path = chrome.runtime.getURL("theme_changer/css/Dark.css");
 			break;
 		}
 		case 3:
 		{
-			//href_path = browser.runtime.getURL("theme_changer/css/Neon.css");
+			//href_path = chrome.runtime.getURL("theme_changer/css/Neon.css");
 			break;
 		}
 		case 4:
 		{
-			href_path = text_theme;
+			href_path = core_default.text_theme;
 			break;
 		}
-	}
+	}	
 	
 	//console.log(href_path);
-	//console.log(core_default.switch_theme);
 
 	if( nj("head #DomicStyle").length < 1 && href_path != "" )
 	{

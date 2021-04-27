@@ -49,34 +49,11 @@ $(document).ready(function()
     $( "#black-bg" ).fadeOut( "slow" );
   });
 
-  //spawnNotification(1, "test1");
-
-
-  //setTimeout(spawnNotification, 10000, 2, "test2");
+  $(document).keyup(function(e) 
+	{
+		if (e.keyCode === 46) {
+			deadline_checker();
+		}
+	});
 
 });
-
-
-function spawnNotification(typeOfNotification, body) {
-
-  if (typeOfNotification == 1)
-  {
-    var icon = browser.runtime.getURL("src/notify_soon.png");
-    var title = "[Domic Ext V2] Скоро дедлайн!";
-  }
-  else
-  {
-    var icon = browser.runtime.getURL("src/notify_rip.png");
-    var title = "[Domic Ext V2] Deadline..";
-  }
-
-  var tag = 'push';
-
-  var options = {
-    body: body,
-    icon: icon,
-    tag: tag
-  };
-
-  var n = new Notification(title, options);
-}

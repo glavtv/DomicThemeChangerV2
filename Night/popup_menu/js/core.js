@@ -302,6 +302,7 @@ function ext_theme_change()
 {
     switch (parseInt(core_default.switch_theme, 10)) 
     {
+        //TODO: Инжект тёмной темы отдельно, а не поверх всего
         case 1:
         {
             if ( $('#WhitePower').length < 1 )

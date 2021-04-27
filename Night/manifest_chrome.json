@@ -2,15 +2,10 @@
   	"manifest_version": 2,
 
   	"name": "Domic Theme Changer V2",
-  	"version": "2.27",
+  	"version": "2.26",
   	"description": "Расширенные возможности для сайта domic.isu.ru",
 	"author": "G L X V/ARTZ",
   	"homepage_url": "https://vk.com/glxv.artz",
-
-	"browser_specific_settings": {
-    "gecko": {
-      "id": "{9bc1cba2-8582-4731-bb13-f9d78c030f82}"
-    }},
 
   	"icons": 
 	{
