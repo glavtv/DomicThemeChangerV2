@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@200;300;400;500&display=swap');
+:root {
+    --menu-width: 300px;
+    --menu-height: 450px;
+    --h-selector-icon-zoom: 46%;
+}
+
+* {
+    font-family: 'Fira Sans';
+    font-size: 15px;
+    font-weight: 200;
+    margin: 0px;
+    padding: 0px;
+}
+
+html {
+    -ms-overflow-style: none;
+    /* IE 10+ */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+select>option 
+{
+    font-size: 14px;
+}
+
+#Main-Window {
+    overflow-x: hidden;
+    width: var(--menu-width);
+    height: var(--menu-height);
+    border: 0;
+}
+
+#Main-Window::-webkit-scrollbar 
+{
+    /* chrome based */
+    width: 0px;
+    /* ширина scrollbar'a */
+    background: transparent;
+    /* опционально */
+    display: none;
+}
+
+#Main-Head {
+    position: fixed;
+    display: flex;
+    width: var(--menu-width);
+    height: 50px;
+    z-index: 228;
+    box-shadow: 0px -100px 60px 80px rgba(0, 0, 0, 0.7);
+}
+
+#Main-Head>div {
+    width: 25%;
+    height: 49px;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    -webkit-transition: all 0.1s ease;
+    -moz-transition: all 0.1s ease;
+    -o-transition: all 0.1s ease;
+    transition: all 0.1s ease;
+}
+
+#Main-Head>div>svg {
+    height: var(--h-selector-icon-zoom);
+    margin: auto;
+    -webkit-transition: all 0.1s ease;
+    -moz-transition: all 0.1s ease;
+    -o-transition: all 0.1s ease;
+    transition: all 0.1s ease;
+}
+
+#Main-Body {
+    position: relative;
+    top: 50px;
+    width: var(--menu-width);
+    height: auto;
+    padding: 15px;
+}
+
+#Main-Body>section>div {
+    margin-bottom: 14px;
+}
+
+#Main-Body>#Menu-4>div>span {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+#accent_color {
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+}
+
+.flex-friend-left {
+    display: flex;
+    justify-content: left;
+}
+
+.flex-friend-left>* {
+    margin-right: 10px;
+}
+
+.more-space-up:not(:nth-child(1)) {
+    margin-top: 40px;
+}
+
+.container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.container>div>div:nth-child(1) {
+    margin-top: 10px;
+    margin-bottom: -15px;
+    text-align: center;
+    opacity: 0.5;
+}
+
+.container>div>div:nth-child(1)>p {
+    font-size: 14px;
+    font-weight: 200;
+}
+
+.container>div>div:nth-child(2) {
+    margin-bottom: 15px;
+}
+
+.text-center span.navbar-text {
+    font-weight: 400;
+    font-size: 18px;
+}
+
+
+
+.rainbow {
+    /* Font options */
+    font-weight: 400 !important;
+    /* Standar Syntax */
+    animation: Color-RGB 10s infinite;
+}

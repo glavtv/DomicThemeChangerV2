@@ -1,24 +1,51 @@
 var core_default = {
-    "ext_theme": 1,                 //Тема расширения 
-    "ext_ver": 2.2,                //Версия расширения
-    "check_ext": true,              //Кнопка-переключатель, расширение              
-    "check_icon": true,             //Кнопка-переключатель, иконка 
-    "check_title": true,            //Кнопка-переключатель, название
-    "check_theme": true,            //Кнопка-переключатель, тема
-    "check_layer": true,            //Кнопка-переключатель, подложка
-    "text_icon": "",                //Текст, ссылка на иконку    
-    "text_title": "",               //Текст, название вкладки
-    "text_theme": "",               //Текст, ссылка на тему
-    "text_loader": "",              //Текст, ссылка на gif-загрузку
-    "switch_theme": 1,              //Список, выбранная тема
-    "switch_loader": 1,             //Список, выбранная тема
+
+    //Расширение (меню)
+    "check_ext": true,                              //Кнопка-переключатель, расширение     
+    "ext_theme": 1,                                 //Тема расширения 
+    "ext_ver": 2.3,                                 //Версия расширения
+
+
+    //Вкладка               
+    "check_icon": true,                             //Кнопка-переключатель, иконка вкладки
+    "check_title": true,                            //Кнопка-переключатель, название вкладки
+    "check_theme": true,                            //Кнопка-переключатель, тема сайта
+
+    "text_icon": "",                                //Текст, ссылка на иконку    
+    "text_title": "",                               //Текст, название вкладки
+    "text_theme": "",                               //Текст, ссылка на тему
+
+    "switch_theme": 1,                              //Список, выбранная тема
+
+
+    //Accent color
     "cpicker_r": 13,    
     "cpicker_g": 110,    
-    "cpicker_b": 253,      
-    "num_layer_delay": 1500,        //Диапазон чисел, длительность перехода
-    "num_layer_fadeout": 1000,      //Диапазон чисел, длительность затухания
-    "menu_rgb": false,              //Переливание цветов
-    "menu_rotate_icon": false        //Крутящиеся иконки
+    "cpicker_b": 253,
+    
+
+    //Подложка
+    "check_layer": true,                            //Кнопка-переключатель, подложка
+    "text_loader": "",                              //Собственная gif-ка для загрузки
+    "switch_loader": 1,                             //Список, выбранная тема
+    "num_layer_delay": 1500,                        //Диапазон чисел, длительность перехода
+    "num_layer_fadeout": 1000,                      //Диапазон чисел, длительность затухания
+
+
+    //Анимации
+    "menu_rgb": false,                              //Переливание цветов
+    "menu_rotate_icon": false,                      //Крутящиеся иконки
+
+
+    //Уведомления
+    "notification_time_freq": 6,                    //частота оповещения
+    "notification_days_before_deadline": 3,         //дней до деда
+    "notification_repeat_max": 3,                   //кол-во повторений
+
+
+    //Фиксы через скрипты
+    "clean_demo": true,                             //Очищать поля DEMO
+    "redirect_when_error": true                     //Если выкинуло из сессии переходить автоматически на главную
 };
 
 var RGB_CHECK = null;
@@ -305,41 +332,37 @@ function ext_theme_change()
         //TODO: Инжект тёмной темы отдельно, а не поверх всего
         case 1:
         {
-            if ( $('#WhitePower').length < 1 )
+            if ( $('#MenuLight').length < 1 )
             {
                 document.getElementsByTagName("head")[0].insertAdjacentHTML(
                 "beforeend",
-                "<link id=\"WhitePower\" rel=\"stylesheet\" href=\"css/WhitePower.css\" />");
+                "<link id=\"MenuLight\" rel=\"stylesheet\" href=\"css/MenuLight.css\" />");
             }
 
             $('#switch_loader').attr('disabled', "yes");
             $('#ext_theme').attr('disabled', "yes");
 
+            $('#MenuDark').remove();
             break;
         }
         case 2:
         {
-            $('#WhitePower').remove();
+            if ( $('#MenuDark').length < 1 )
+            {
+                document.getElementsByTagName("head")[0].insertAdjacentHTML(
+                "beforeend",
+                "<link id=\"MenuDark\" rel=\"stylesheet\" href=\"css/MenuDark.css\" />");
+            }
 
             $('#switch_loader').attr('disabled', "yes");
             $('#ext_theme').attr('disabled', "yes");
+
+            $('#MenuLight').remove();
             break;
         }
         default:
         {
-            if (core_default.ext_theme == 1)
-            {
-                if ( $('#WhitePower').length < 1 )
-                {
-                    document.getElementsByTagName("head")[0].insertAdjacentHTML(
-                    "beforeend",
-                    "<link id=\"WhitePower\" rel=\"stylesheet\" href=\"css/WhitePower.css\" />");
-                }
-            }
-            else
-            {
-                $('#WhitePower').remove(); 
-            }
+        
 
             $('#switch_loader').removeAttr('disabled');
             $('#ext_theme').removeAttr('disabled');

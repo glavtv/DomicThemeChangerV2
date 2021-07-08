@@ -1,31 +1,60 @@
 var core_default = {
-    "ext_theme": 1,                 //Тема расширения 
-    "ext_ver": 2.2,                //Версия расширения
-    "check_ext": true,              //Кнопка-переключатель, расширение              
-    "check_icon": true,             //Кнопка-переключатель, иконка 
-    "check_title": true,            //Кнопка-переключатель, название
-    "check_theme": true,            //Кнопка-переключатель, тема
-    "check_layer": true,            //Кнопка-переключатель, подложка
-    "text_icon": "",                //Текст, ссылка на иконку    
-    "text_title": "",               //Текст, название вкладки
-    "text_theme": "",               //Текст, ссылка на тему
-    "text_loader": "",              //Текст, ссылка на gif-загрузку
-    "switch_theme": 1,              //Список, выбранная тема
-    "switch_loader": 1,             //Список, выбранная тема
-    "cpicker_r": 13,    
-    "cpicker_g": 110,    
-    "cpicker_b": 253,      
-    "num_layer_delay": 1500,        //Диапазон чисел, длительность перехода
-    "num_layer_fadeout": 1000,      //Диапазон чисел, длительность затухания
-    "menu_rgb": false,              //Переливание цветов
-    "menu_rotate_icon": false       //Крутящиеся иконки
+
+	//Расширение (меню)
+	"check_ext": true,                              //Кнопка-переключатель, расширение     
+	"ext_theme": 1,                                 //Тема расширения 
+	"ext_ver": 2.3,                                 //Версия расширения
+  
+	
+	//Вкладка               
+	"check_icon": true,                             //Кнопка-переключатель, иконка вкладки
+	"check_title": true,                            //Кнопка-переключатель, название вкладки
+	"check_theme": true,                            //Кнопка-переключатель, тема сайта
+  
+	"text_icon": "",                                //Текст, ссылка на иконку    
+	"text_title": "",                               //Текст, название вкладки
+	"text_theme": "",                               //Текст, ссылка на тему
+  
+	"switch_theme": 1,                              //Список, выбранная тема
+  
+  
+	//Accent color
+	"cpicker_r": 13,    
+	"cpicker_g": 110,    
+	"cpicker_b": 253,
+	
+  
+	//Подложка
+	"check_layer": true,                            //Кнопка-переключатель, подложка
+	"text_loader": "",                              //Собственная gif-ка для загрузки
+	"switch_loader": 1,                             //Список, выбранная тема
+	"num_layer_delay": 1500,                        //Диапазон чисел, длительность перехода
+	"num_layer_fadeout": 1000,                      //Диапазон чисел, длительность затухания
+  
+  
+	//Анимации
+	"menu_rgb": false,                              //Переливание цветов
+	"menu_rotate_icon": false,                      //Крутящиеся иконки
+  
+  
+	//Уведомления
+	"notification_time_freq": 6,                  //частота оповещения
+	"notification_days_before_deadline": 3,         //дней до деда
+	"notification_repeat_max": 3,                   //кол-во повторений
+  
+  
+	//Фиксы через скрипты
+	"clean_demo": true,                             //Очищать поля DEMO
+	"redirect_when_error": true                     //Если выкинуло из сессии переходить автоматически на главную
 };
 
-var nj = $.noConflict(true),
+
+var 	nj = $.noConflict(true),
 	DTC_PORT = chrome.runtime.connect({name:"DTC_PORT"}),
 	jq_ready = false,
 	OpenHomeworkPage = window.location.pathname,
 	original_title = "domic.isu.ru";
+
 
 DTC_PORT.onMessage.addListener(function(m) 
 {
@@ -132,14 +161,14 @@ function core_apply()
 	//Fix comments
 	CssFix();
 
-    //Custom Site Title
-	if (core_default.text_title != "" && core_default.text_title != null)
+    	//Custom Site Title
+	if (core_default.text_title == "" || core_default.text_title == null || core_default.check_title == false)
 	{
-		document.title = core_default.text_title;
+		document.title = original_title;
 	}
 	else
 	{
-		document.title = original_title;
+		document.title = core_default.text_title;
 	}
 		
 	//Custom Icon
@@ -278,8 +307,12 @@ function hide_load_layer()
 
 function auto_clean()
 {
-	nj("input[name=\"nik\"]").val('');
-	nj("input[name=\"password\"]").val('');
+	if (core_default.clean_demo == true)
+	{
+		nj("input[name=\"nik\"]").val('');
+		nj("input[name=\"password\"]").val('');
+	}
+	
 }
 
 
@@ -361,7 +394,7 @@ function Fix_Comment()
 
 function fix_session()
 {
-	if (jq_ready == true)
+	if (jq_ready == true && core_default.redirect_when_error == true)
 	{
 		var content = nj("#content p:nth-child(1)").text(),
 		content_min = content.replace(/[^a-zа-яёA-ZА-ЯЁ]/g, ''),
@@ -385,8 +418,6 @@ function fix_session()
 }
 
 //Подписка на деды
-
-
 function DeadlineList()
 {
 	
