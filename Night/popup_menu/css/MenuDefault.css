@@ -143,3 +143,8 @@ select>option
     /* Standar Syntax */
     animation: Color-RGB 10s infinite;
 }
+
+.text-tooltip
+{
+    color: rgb(13, 110, 253);
+}

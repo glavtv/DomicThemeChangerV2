@@ -116,10 +116,12 @@ function core_start()
 
 	if ( (page_entity != null && page_content != null && page_html != null) || (page_res != null && page_sim != null && page_html != null)  )
 	{
+		console.log("1");
 		fix_session();
 	}
 	else
 	{
+		console.log("2");
 		core_run();
 		fix_session();
 	}
@@ -394,12 +396,12 @@ function Fix_Comment()
 
 function fix_session()
 {
-	if (jq_ready == true && core_default.redirect_when_error == true)
+	if (jq_ready == true)
 	{
 		var content = nj("#content p:nth-child(1)").text(),
 		content_min = content.replace(/[^a-zа-яёA-ZА-ЯЁ]/g, ''),
 		ses_out_text = "ВынеавторизованывсистемеПожалуйстаперейдитенастраницуавторизации";
-		if (content_min == ses_out_text)
+		if (content_min == ses_out_text && core_default.redirect_when_error == true)
 		{
 			if (nj("input[name=\"nik\"]").length == 0)
 			{

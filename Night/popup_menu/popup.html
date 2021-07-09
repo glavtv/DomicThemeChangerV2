@@ -53,7 +53,7 @@
                 <div class="text-center">
                     <span class="navbar-text">
                         Основное
-                        </span>
+                    </span>
                 </div>
 
                 <div class="form-check form-switch">
@@ -83,12 +83,12 @@
 
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" id="clean_demo" checked>
-                    <label class="form-check-label" for="clean_demo">clean_demo</label>
+                    <label class="form-check-label" for="clean_demo">Очищать поля авторизации</label>
                 </div>
 
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" id="redirect_when_error" checked>
-                    <label class="form-check-label" for="redirect_when_error">redirect_when_error</label>
+                    <label class="form-check-label" for="redirect_when_error">Перенаправлять при ошибке</label>
                 </div>
 
             </section>
@@ -206,19 +206,22 @@
 
                 <div class="mb-3">
                     <div class="flex-friend-left">
-                        <label class="form-label" id="notification_time_freq">notification_time_freq (Hours)</label>
+                        <label class="form-label" id="notification_time_freq_text">Частота показа уведомлений (Каждые N часов)</label>
                     </div>
-                    <input type="range" class="form-range" min="1" max="24" step="1" value="6">
+                    <input type="range" class="form-range"  id="notification_time_freq" min="1" max="24" step="1" value="6">
 
                     <div class="flex-friend-left">
-                        <label class="form-label" id="notification_days_before_deadline">notification_days_before_deadline</label>
+                        <label class="form-label"><span id="notification_days_before_deadline_text">Информировать за N суток до дедлайна </span><span class="text-tooltip" title="За N дней до дедлайна
+начнётся показ уведомлений в браузере">(?)</span></label>
                     </div>
-                    <input type="range" class="form-range" min="1" max="30" step="1" value="3">
+                    <input type="range" class="form-range" id="notification_days_before_deadline" min="1" max="30" step="1" value="3">
 
                     <div class="flex-friend-left">
-                        <label class="form-label" id="notification_repeat_max">notification_repeat_max</label>
+                        <label class="form-label"><span id="notification_repeat_max_text">N повторов уведомлений на дедлайн </span><span class="text-tooltip" title="Какое количество раз
+будет показан один и тот же
+дедлайн в уведомлении">(?)</span></label>
                     </div>
-                    <input type="range" class="form-range" min="1" max="5" step="1" value="3">
+                    <input type="range" class="form-range" id="notification_repeat_max" min="1" max="5" step="1" value="3">
                 </div>
 
 

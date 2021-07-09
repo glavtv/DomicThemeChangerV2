@@ -101,6 +101,29 @@ function num_text()
 {
     $( "#num_text_delay" ).text('Длительность подложки ('+ core_default.num_layer_delay +'мс)');
     $( "#num_text_fadeout" ).text('Длительность затухания ('+ core_default.num_layer_fadeout +'мс)');
+    $( "#notification_repeat_max_text" ).text( 'Количество повторов уведомлений на дедлайн ('+core_default.notification_repeat_max +') ');
+
+    
+    $( "#notification_days_before_deadline_text" ).text( 'Информировать за '+ core_default.notification_days_before_deadline +' ' + ( (core_default.notification_days_before_deadline == 1 || core_default.notification_days_before_deadline == 21) ? "сутки" : "суток") + ' до дедлайна ' );
+
+    var hours_ = "";
+    var word = "";
+    if (core_default.notification_time_freq == 1 || core_default.notification_time_freq == 21)
+    {
+        hours_ = "час";
+        word = "Каждый";
+    }
+    else if ( (core_default.notification_time_freq > 1 && core_default.notification_time_freq <= 4) || core_default.notification_time_freq >= 22)
+    {
+        hours_ = "часа";
+        word = "Каждые";
+    }
+    else
+    {
+        hours_ = "часов";
+        word = "Каждые";
+    }
+    $("#notification_time_freq_text").text('Частота показа уведомлений (' + word + ' '+ core_default.notification_time_freq +' ' + hours_ +')');
 }
 
 function accent_apply()
@@ -219,6 +242,15 @@ function refresh()
     core_default.num_layer_delay = $('#Menu-2 input[type="range"]:nth-child(2)').val();
     core_default.num_layer_fadeout = $('#Menu-2 input[type="range"]:nth-child(4)').val();
 
+    core_default.notification_days_before_deadline = $('#notification_days_before_deadline').val();
+    core_default.notification_repeat_max = $('#notification_repeat_max').val();
+    core_default.notification_time_freq = $('#notification_time_freq').val();
+
+
+
+    core_default.clean_demo = ($('#clean_demo').is(":checked")) ? true : false;
+    core_default.redirect_when_error = ($('#redirect_when_error').is(":checked")) ? true : false;
+
     console.log("[DTC V2: Core]: Updated");
 }
 
@@ -237,7 +269,8 @@ function save()
 function loadUD()
 {
     Data = JSON.parse(localStorage.getItem('DTC'));
-	if (Data != null)
+
+	if (Data != null && Data.ext_ver == core_default.ext_ver)
 	{
         $('#check_ext').prop('checked', Data.check_ext);
         $('#check_icon').prop('checked', Data.check_icon);
@@ -263,6 +296,13 @@ function loadUD()
 
         $('#Menu-2 input[type="range"]:nth-child(2)').val(Data.num_layer_delay);
         $('#Menu-2 input[type="range"]:nth-child(4)').val(Data.num_layer_fadeout);
+
+        $('#notification_days_before_deadline').val(Data.notification_days_before_deadline);
+        $('#notification_repeat_max').val(Data.notification_repeat_max);
+        $('#notification_time_freq').val(Data.notification_time_freq);
+
+        $('#clean_demo').prop('checked', Data.clean_demo);
+        $('#redirect_when_error').prop('checked', Data.redirect_when_error);
 
         console.log("[DTC V2: Core] Loaded");
 
