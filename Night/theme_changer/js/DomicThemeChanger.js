@@ -17,6 +17,7 @@ var core_default = {
   
 	"switch_theme": 1,                              //Список, выбранная тема
   
+	"check_new_navbar": true,				//Шапка на сайте заместо боковой авторизации
   
 	//Accent color
 	"cpicker_r": 13,    
@@ -157,6 +158,18 @@ function core_reset()
 
 function core_apply()
 {
+	newNavBar();
+	if (core_default.check_new_navbar == true)
+	{
+		//NewNavBar
+		newNavBar();
+	}
+	else
+	{
+		//ResetNavBar
+	}
+	
+
 	//Auto Cleaner
 	auto_clean();
 
@@ -475,3 +488,44 @@ function DeadlineList()
 		//console.log(ddline_list);
 		DTC_PORT.postMessage({greeting: ddline_list});
 }
+
+
+function newNavBar()
+{
+	//Новая шапка
+	//https://compressor.andona.click/
+
+	//nj("head #DomicStyle").remove();
+
+	if( nj("head #NewNavBar").length < 1)
+	{
+		var href_path = chrome.runtime.getURL("theme_changer/css/NavMenu.css");
+
+		nj('<link>', {
+				id: 'NewNavBar',
+				rel: 'stylesheet',
+				type: 'text/css',
+				href: href_path
+		}).prependTo('head');	
+	}
+
+	if( nj("head #HideDefaultNavBar").length < 1)
+	{
+		var href_path = chrome.runtime.getURL("theme_changer/css/hideDefaultAuth.css");
+		nj('<link>', {
+				id: 'HideDefaultNavBar',
+				rel: 'stylesheet',
+				type: 'text/css',
+				href: href_path
+		}).prependTo('head');	
+	}
+
+	if( nj("body header").length < 1)
+	{
+		var compressed_html = '<header><nav class="fixed-top navbar navbar-dark navbar-expand-md"><div class=container-fluid><img alt=""id=logotype-navbar src=../../assets/icons/logo_128.png><div id=menu-phone class=dropdown><button aria-expanded=false class="btn btn-secondary dropdown-toggle"data-bs-toggle=dropdown id=dropdownMenu2 type=button>ИОС ДОМИК</button><ul class=dropdown-menu aria-labelledby=dropdownMenu2><li class=nav-item><a href=http://domic.isu.ru/student/ class=nav-link>Страница студента</a><li class=nav-item><a href=http://domic.isu.ru/res/sim/index.html class=nav-link>Симуляторы</a><li class=nav-item><a href=http://domic.isu.ru/logout.html class=nav-link>Выход</a></ul></div><div id=menu-pc id=navbarCollapse class="collapse navbar-collapse"><ul class="mb-2 mb-md-0 me-auto navbar-nav"><li class=nav-item><a href=http://domic.isu.ru/student/ class=nav-link>Страница студента</a><li class=nav-item><a href=http://domic.isu.ru/res/sim/index.html class=nav-link>Симуляторы</a></ul><div id=auth><p>Даниил Александрович Краев <span class=style-exit><a href=http://domic.isu.ru/logout.html>(Выход)</a></span></div></div></div></nav></header>';
+		nj("body").prepend( compressed_html );
+	}
+	
+}
+
+

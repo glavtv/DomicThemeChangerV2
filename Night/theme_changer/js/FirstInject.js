@@ -142,6 +142,6 @@ function load_layer()
 	{
 		div.innerHTML = "<div class=\"DTC-Window-Center\"> <img src=\"" + loader_gif + "\" alt=\"\"/> </div>";
 	}
-		
+	
 	document.body.prepend(div);
 }
