@@ -2,27 +2,54 @@ document.addEventListener ("DOMContentLoaded", load_layer);
 var DTC_PORT = chrome.runtime.connect({name:"DTC_PORT"});
 
 var core_default = {
-    "ext_theme": 1,                 //Тема расширения 
-    "ext_ver": 2.2,                //Версия расширения
-    "check_ext": true,              //Кнопка-переключатель, расширение              
-    "check_icon": true,             //Кнопка-переключатель, иконка 
-    "check_title": true,            //Кнопка-переключатель, название
-    "check_theme": true,            //Кнопка-переключатель, тема
-    "check_layer": true,            //Кнопка-переключатель, подложка
-    "text_icon": "",                //Текст, ссылка на иконку    
-    "text_title": "",               //Текст, название вкладки
-    "text_theme": "",               //Текст, ссылка на тему
-    "text_loader": "",              //Текст, ссылка на gif-загрузку
-    "switch_theme": 1,              //Список, выбранная тема
-    "switch_loader": 1,             //Список, выбранная тема
-    "cpicker_r": 13,    
-    "cpicker_g": 110,    
-    "cpicker_b": 253,      
-    "num_layer_delay": 1500,        //Диапазон чисел, длительность перехода
-    "num_layer_fadeout": 1000,      //Диапазон чисел, длительность затухания
-    "menu_rgb": false,              //Переливание цветов
-    "menu_rotate_icon": false        //Крутящиеся иконки
-};
+
+	//Расширение (меню)
+	"check_ext": true,                              //Кнопка-переключатель, расширение     
+	"ext_theme": 1,                                 //Тема расширения 
+	"ext_ver": 2.3,                                 //Версия расширения
+  
+	
+	//Вкладка               
+	"check_icon": true,                             //Кнопка-переключатель, иконка вкладки
+	"check_title": true,                            //Кнопка-переключатель, название вкладки
+	"check_theme": true,                            //Кнопка-переключатель, тема сайта
+  
+	"text_icon": "",                                //Текст, ссылка на иконку    
+	"text_title": "",                               //Текст, название вкладки
+	"text_theme": "",                               //Текст, ссылка на тему
+  
+	"switch_theme": 1,                              //Список, выбранная тема
+  
+  
+	//Accent color
+	"cpicker_r": 13,    
+	"cpicker_g": 110,    
+	"cpicker_b": 253,
+	
+  
+	//Подложка
+	"check_layer": true,                            //Кнопка-переключатель, подложка
+	"text_loader": "",                              //Собственная gif-ка для загрузки
+	"switch_loader": 1,                             //Список, выбранная тема
+	"num_layer_delay": 1500,                        //Диапазон чисел, длительность перехода
+	"num_layer_fadeout": 1000,                      //Диапазон чисел, длительность затухания
+  
+  
+	//Анимации
+	"menu_rgb": false,                              //Переливание цветов
+	"menu_rotate_icon": false,                      //Крутящиеся иконки
+  
+  
+	//Уведомления
+	"notification_time_freq": 6.0,                  //частота оповещения
+	"notification_days_before_deadline": 3,         //дней до деда
+	"notification_repeat_max": 3,                   //кол-во повторений
+  
+  
+	//Фиксы через скрипты
+	"clean_demo": true,                             //Очищать поля DEMO
+	"redirect_when_error": true                     //Если выкинуло из сессии переходить автоматически на главную
+  };
 
 
 DTC_PORT.onMessage.addListener(function(m) 

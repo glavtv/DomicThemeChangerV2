@@ -1,30 +1,61 @@
 var core_default = {
-    "ext_theme": 1,                 //Тема расширения 
-    "ext_ver": 2.2,                //Версия расширения
-    "check_ext": true,              //Кнопка-переключатель, расширение              
-    "check_icon": true,             //Кнопка-переключатель, иконка 
-    "check_title": true,            //Кнопка-переключатель, название
-    "check_theme": true,            //Кнопка-переключатель, тема
-    "check_layer": true,            //Кнопка-переключатель, подложка
-    "text_icon": "",                //Текст, ссылка на иконку    
-    "text_title": "",               //Текст, название вкладки
-    "text_theme": "",               //Текст, ссылка на тему
-    "text_loader": "",              //Текст, ссылка на gif-загрузку
-    "switch_theme": 1,              //Список, выбранная тема
-    "switch_loader": 1,             //Список, выбранная тема
+
+    //Расширение (меню)
+    "check_ext": true,                              //Кнопка-переключатель, расширение     
+    "ext_theme": 1,                                 //Тема расширения 
+    "ext_ver": 2.3,                                 //Версия расширения
+
+
+    //Вкладка               
+    "check_icon": true,                             //Кнопка-переключатель, иконка вкладки
+    "check_title": true,                            //Кнопка-переключатель, название вкладки
+    "check_theme": true,                            //Кнопка-переключатель, тема сайта
+
+    "text_icon": "",                                //Текст, ссылка на иконку    
+    "text_title": "",                               //Текст, название вкладки
+    "text_theme": "",                               //Текст, ссылка на тему
+
+    "switch_theme": 1,                              //Список, выбранная тема
+
+
+    //Accent color
     "cpicker_r": 13,    
     "cpicker_g": 110,    
-    "cpicker_b": 253,      
-    "num_layer_delay": 1500,        //Диапазон чисел, длительность перехода
-    "num_layer_fadeout": 1000,      //Диапазон чисел, длительность затухания
-    "menu_rgb": false,              //Переливание цветов
-    "menu_rotate_icon": false        //Крутящиеся иконки
+    "cpicker_b": 253,
+    
+
+    //Подложка
+    "check_layer": true,                            //Кнопка-переключатель, подложка
+    "text_loader": "",                              //Собственная gif-ка для загрузки
+    "switch_loader": 1,                             //Список, выбранная тема
+    "num_layer_delay": 1500,                        //Диапазон чисел, длительность перехода
+    "num_layer_fadeout": 1000,                      //Диапазон чисел, длительность затухания
+
+
+    //Анимации
+    "menu_rgb": false,                              //Переливание цветов
+    "menu_rotate_icon": false,                      //Крутящиеся иконки
+
+
+    //Уведомления
+    "notification_time_freq": 6,                    //частота оповещения
+    "notification_days_before_deadline": 3,         //дней до деда
+    "notification_repeat_max": 3,                   //кол-во повторений
+
+
+    //Фиксы через скрипты
+    "clean_demo": true,                             //Очищать поля DEMO
+    "redirect_when_error": true                     //Если выкинуло из сессии переходить автоматически на главную
 };
 
 var RGB_CHECK = null;
 
 $(document).ready(function() 
 {
+
+    //Страница подписки на уведомления
+    $('a[rel=external]').attr('href', chrome.runtime.getURL("popup_menu/subscribe_page.html"));
+
     load();
 
     $('#Main-Head > div').on('click', function(e)
@@ -70,6 +101,29 @@ function num_text()
 {
     $( "#num_text_delay" ).text('Длительность подложки ('+ core_default.num_layer_delay +'мс)');
     $( "#num_text_fadeout" ).text('Длительность затухания ('+ core_default.num_layer_fadeout +'мс)');
+    $( "#notification_repeat_max_text" ).text( 'Количество повторов уведомлений на дедлайн ('+core_default.notification_repeat_max +') ');
+
+    
+    $( "#notification_days_before_deadline_text" ).text( 'Информировать за '+ core_default.notification_days_before_deadline +' ' + ( (core_default.notification_days_before_deadline == 1 || core_default.notification_days_before_deadline == 21) ? "сутки" : "суток") + ' до дедлайна ' );
+
+    var hours_ = "";
+    var word = "";
+    if (core_default.notification_time_freq == 1 || core_default.notification_time_freq == 21)
+    {
+        hours_ = "час";
+        word = "Каждый";
+    }
+    else if ( (core_default.notification_time_freq > 1 && core_default.notification_time_freq <= 4) || core_default.notification_time_freq >= 22)
+    {
+        hours_ = "часа";
+        word = "Каждые";
+    }
+    else
+    {
+        hours_ = "часов";
+        word = "Каждые";
+    }
+    $("#notification_time_freq_text").text('Частота показа уведомлений (' + word + ' '+ core_default.notification_time_freq +' ' + hours_ +')');
 }
 
 function accent_apply()
@@ -188,6 +242,15 @@ function refresh()
     core_default.num_layer_delay = $('#Menu-2 input[type="range"]:nth-child(2)').val();
     core_default.num_layer_fadeout = $('#Menu-2 input[type="range"]:nth-child(4)').val();
 
+    core_default.notification_days_before_deadline = $('#notification_days_before_deadline').val();
+    core_default.notification_repeat_max = $('#notification_repeat_max').val();
+    core_default.notification_time_freq = $('#notification_time_freq').val();
+
+
+
+    core_default.clean_demo = ($('#clean_demo').is(":checked")) ? true : false;
+    core_default.redirect_when_error = ($('#redirect_when_error').is(":checked")) ? true : false;
+
     console.log("[DTC V2: Core]: Updated");
 }
 
@@ -206,7 +269,8 @@ function save()
 function loadUD()
 {
     Data = JSON.parse(localStorage.getItem('DTC'));
-	if (Data != null)
+
+	if (Data != null && Data.ext_ver == core_default.ext_ver)
 	{
         $('#check_ext').prop('checked', Data.check_ext);
         $('#check_icon').prop('checked', Data.check_icon);
@@ -232,6 +296,13 @@ function loadUD()
 
         $('#Menu-2 input[type="range"]:nth-child(2)').val(Data.num_layer_delay);
         $('#Menu-2 input[type="range"]:nth-child(4)').val(Data.num_layer_fadeout);
+
+        $('#notification_days_before_deadline').val(Data.notification_days_before_deadline);
+        $('#notification_repeat_max').val(Data.notification_repeat_max);
+        $('#notification_time_freq').val(Data.notification_time_freq);
+
+        $('#clean_demo').prop('checked', Data.clean_demo);
+        $('#redirect_when_error').prop('checked', Data.redirect_when_error);
 
         console.log("[DTC V2: Core] Loaded");
 
@@ -298,43 +369,40 @@ function ext_theme_change()
 {
     switch (parseInt(core_default.switch_theme, 10)) 
     {
+        //TODO: Инжект тёмной темы отдельно, а не поверх всего
         case 1:
         {
-            if ( $('#WhitePower').length < 1 )
+            if ( $('#MenuLight').length < 1 )
             {
                 document.getElementsByTagName("head")[0].insertAdjacentHTML(
                 "beforeend",
-                "<link id=\"WhitePower\" rel=\"stylesheet\" href=\"css/WhitePower.css\" />");
+                "<link id=\"MenuLight\" rel=\"stylesheet\" href=\"css/MenuLight.css\" />");
             }
 
             $('#switch_loader').attr('disabled', "yes");
             $('#ext_theme').attr('disabled', "yes");
 
+            $('#MenuDark').remove();
             break;
         }
         case 2:
         {
-            $('#WhitePower').remove();
+            if ( $('#MenuDark').length < 1 )
+            {
+                document.getElementsByTagName("head")[0].insertAdjacentHTML(
+                "beforeend",
+                "<link id=\"MenuDark\" rel=\"stylesheet\" href=\"css/MenuDark.css\" />");
+            }
 
             $('#switch_loader').attr('disabled', "yes");
             $('#ext_theme').attr('disabled', "yes");
+
+            $('#MenuLight').remove();
             break;
         }
         default:
         {
-            if (core_default.ext_theme == 1)
-            {
-                if ( $('#WhitePower').length < 1 )
-                {
-                    document.getElementsByTagName("head")[0].insertAdjacentHTML(
-                    "beforeend",
-                    "<link id=\"WhitePower\" rel=\"stylesheet\" href=\"css/WhitePower.css\" />");
-                }
-            }
-            else
-            {
-                $('#WhitePower').remove(); 
-            }
+        
 
             $('#switch_loader').removeAttr('disabled');
             $('#ext_theme').removeAttr('disabled');

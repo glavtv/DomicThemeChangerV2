@@ -1,31 +1,60 @@
 var core_default = {
-    "ext_theme": 1,                 //Тема расширения 
-    "ext_ver": 2.2,                //Версия расширения
-    "check_ext": true,              //Кнопка-переключатель, расширение              
-    "check_icon": true,             //Кнопка-переключатель, иконка 
-    "check_title": true,            //Кнопка-переключатель, название
-    "check_theme": true,            //Кнопка-переключатель, тема
-    "check_layer": true,            //Кнопка-переключатель, подложка
-    "text_icon": "",                //Текст, ссылка на иконку    
-    "text_title": "",               //Текст, название вкладки
-    "text_theme": "",               //Текст, ссылка на тему
-    "text_loader": "",              //Текст, ссылка на gif-загрузку
-    "switch_theme": 1,              //Список, выбранная тема
-    "switch_loader": 1,             //Список, выбранная тема
-    "cpicker_r": 13,    
-    "cpicker_g": 110,    
-    "cpicker_b": 253,      
-    "num_layer_delay": 1500,        //Диапазон чисел, длительность перехода
-    "num_layer_fadeout": 1000,      //Диапазон чисел, длительность затухания
-    "menu_rgb": false,              //Переливание цветов
-    "menu_rotate_icon": false       //Крутящиеся иконки
+
+	//Расширение (меню)
+	"check_ext": true,                              //Кнопка-переключатель, расширение     
+	"ext_theme": 1,                                 //Тема расширения 
+	"ext_ver": 2.3,                                 //Версия расширения
+  
+	
+	//Вкладка               
+	"check_icon": true,                             //Кнопка-переключатель, иконка вкладки
+	"check_title": true,                            //Кнопка-переключатель, название вкладки
+	"check_theme": true,                            //Кнопка-переключатель, тема сайта
+  
+	"text_icon": "",                                //Текст, ссылка на иконку    
+	"text_title": "",                               //Текст, название вкладки
+	"text_theme": "",                               //Текст, ссылка на тему
+  
+	"switch_theme": 1,                              //Список, выбранная тема
+  
+  
+	//Accent color
+	"cpicker_r": 13,    
+	"cpicker_g": 110,    
+	"cpicker_b": 253,
+	
+  
+	//Подложка
+	"check_layer": true,                            //Кнопка-переключатель, подложка
+	"text_loader": "",                              //Собственная gif-ка для загрузки
+	"switch_loader": 1,                             //Список, выбранная тема
+	"num_layer_delay": 1500,                        //Диапазон чисел, длительность перехода
+	"num_layer_fadeout": 1000,                      //Диапазон чисел, длительность затухания
+  
+  
+	//Анимации
+	"menu_rgb": false,                              //Переливание цветов
+	"menu_rotate_icon": false,                      //Крутящиеся иконки
+  
+  
+	//Уведомления
+	"notification_time_freq": 6,                  //частота оповещения
+	"notification_days_before_deadline": 3,         //дней до деда
+	"notification_repeat_max": 3,                   //кол-во повторений
+  
+  
+	//Фиксы через скрипты
+	"clean_demo": true,                             //Очищать поля DEMO
+	"redirect_when_error": true                     //Если выкинуло из сессии переходить автоматически на главную
 };
 
-var nj = $.noConflict(true),
+
+var 	nj = $.noConflict(true),
 	DTC_PORT = chrome.runtime.connect({name:"DTC_PORT"}),
 	jq_ready = false,
 	OpenHomeworkPage = window.location.pathname,
 	original_title = "domic.isu.ru";
+
 
 DTC_PORT.onMessage.addListener(function(m) 
 {
@@ -49,6 +78,10 @@ nj(document).ready(function()
 	}
 	else
 	{
+		if (OpenHomeworkPage == "/student/")
+		{
+			DeadlineList();
+		}
 		jq_ready = true;
 		core_start();
 	}
@@ -83,10 +116,12 @@ function core_start()
 
 	if ( (page_entity != null && page_content != null && page_html != null) || (page_res != null && page_sim != null && page_html != null)  )
 	{
+		console.log("1");
 		fix_session();
 	}
 	else
 	{
+		console.log("2");
 		core_run();
 		fix_session();
 	}
@@ -128,14 +163,14 @@ function core_apply()
 	//Fix comments
 	CssFix();
 
-    //Custom Site Title
-	if (core_default.text_title != "" && core_default.text_title != null)
+    	//Custom Site Title
+	if (core_default.text_title == "" || core_default.text_title == null || core_default.check_title == false)
 	{
-		document.title = core_default.text_title;
+		document.title = original_title;
 	}
 	else
 	{
-		document.title = original_title;
+		document.title = core_default.text_title;
 	}
 		
 	//Custom Icon
@@ -196,6 +231,10 @@ function reset_icon()
 
 function set_theme()
 {
+	//console.log(core_default.switch_theme);
+	//console.log(core_default.text_theme);
+
+
 	var href_path = "";
 	switch(parseInt(core_default.switch_theme, 10))
 	{
@@ -216,13 +255,12 @@ function set_theme()
 		}
 		case 4:
 		{
-			href_path = text_theme;
+			href_path = core_default.text_theme;
 			break;
 		}
-	}
+	}	
 	
-	console.log(href_path);
-	console.log(core_default.switch_theme);
+	//console.log(href_path);
 
 	if( nj("head #DomicStyle").length < 1 && href_path != "" )
 	{
@@ -271,8 +309,12 @@ function hide_load_layer()
 
 function auto_clean()
 {
-	nj("input[name=\"nik\"]").val('');
-	nj("input[name=\"password\"]").val('');
+	if (core_default.clean_demo == true)
+	{
+		nj("input[name=\"nik\"]").val('');
+		nj("input[name=\"password\"]").val('');
+	}
+	
 }
 
 
@@ -359,7 +401,7 @@ function fix_session()
 		var content = nj("#content p:nth-child(1)").text(),
 		content_min = content.replace(/[^a-zа-яёA-ZА-ЯЁ]/g, ''),
 		ses_out_text = "ВынеавторизованывсистемеПожалуйстаперейдитенастраницуавторизации";
-		if (content_min == ses_out_text)
+		if (content_min == ses_out_text && core_default.redirect_when_error == true)
 		{
 			if (nj("input[name=\"nik\"]").length == 0)
 			{
@@ -375,4 +417,61 @@ function fix_session()
 			setTimeout(hide_load_layer, parseInt(core_default.num_layer_delay, 10));
 		}
 	}
+}
+
+//Подписка на деды
+function DeadlineList()
+{
+	
+	var ddline_list = {
+		data_count: 0,
+		mass_y: [],
+		mass_m: [],
+		mass_d: [],
+		mass_koef: [],
+		mass_text: [],
+		mass_push_count: []
+	};
+
+	if (nj( '#deadlines ul li' ).length < 1)
+	{
+		console.log("{DTC V2: DP}: Deadline list empty");
+		return 0;
+	}
+
+	console.log( "{DTC V2: DP}: Count - " + nj( '#deadlines ul li' ).length);
+
+		ddline_list.data_count = nj( '#deadlines ul li' ).length;
+
+		nj( '#deadlines ul li' ).each(function (index, value)
+		{
+			var rawText = nj(this).text(),
+				ddline_y = null,
+				ddline_m = null,
+				ddline_d = null,
+				ddline_coeff = null,
+				ddline_text = null;
+			
+			var start_c = rawText.indexOf("("),
+				end_c = rawText.indexOf(")");
+
+			ddline_coeff = rawText.substr( start_c + 1 , (end_c - start_c - 1));
+
+			ddline_text = rawText.substr( rawText.indexOf("—") + 2 );
+			ddline_text = ddline_text.substr( 0 , ddline_text.length - 8 );
+
+			ddline_y = rawText.substr( 8, 4 );
+			ddline_m = rawText.substr( 13, 2 );
+			ddline_d = rawText.substr( 16, 2 );
+			
+			ddline_list.mass_y.push(ddline_y);
+			ddline_list.mass_m.push(ddline_m);
+			ddline_list.mass_d.push(ddline_d);
+			ddline_list.mass_koef.push(ddline_coeff);
+			ddline_list.mass_text.push(ddline_text);
+			ddline_list.mass_push_count.push(0);
+		});
+
+		//console.log(ddline_list);
+		DTC_PORT.postMessage({greeting: ddline_list});
 }

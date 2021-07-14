@@ -54,3 +54,8 @@ a:hover:after
     left: 0;
     height: 100%;
 }
+
+.big_line
+{
+    width: 160px;
+}
