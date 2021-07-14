@@ -1,4 +1,4 @@
-# Domic Dark Theme v2.27
+# Domic Dark Theme v2.30
 https://addons.mozilla.org/ru/firefox/addon/domic-theme-changer/
 
 Расширение умеет:
