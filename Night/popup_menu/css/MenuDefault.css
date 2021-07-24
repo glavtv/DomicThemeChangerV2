@@ -25,7 +25,11 @@ select>option
     font-size: 14px;
 }
 
-#Main-Window {
+#Main-Window 
+{
+    -moz-user-select: none;
+    user-select: none;
+
     overflow-x: hidden;
     width: var(--menu-width);
     height: var(--menu-height);
@@ -147,4 +151,23 @@ select>option
 .text-tooltip
 {
     color: rgb(13, 110, 253);
+}
+
+#preLoad
+{
+    position: absolute;
+
+    width: var(--menu-width);
+    height: var(--menu-height);
+
+    z-index: 999;
+}
+
+.pl-dark
+{
+    background-color: #242323;
+}
+.pl-light
+{
+    background-color: #fff;
 }

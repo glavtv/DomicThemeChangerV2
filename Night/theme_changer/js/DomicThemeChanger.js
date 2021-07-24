@@ -3,7 +3,7 @@ var core_default = {
 	//Расширение (меню)
 	"check_ext": true,                              //Кнопка-переключатель, расширение     
 	"ext_theme": 1,                                 //Тема расширения 
-	"ext_ver": 2.3,                                 //Версия расширения
+	"ext_ver": 2.39,                                 //Версия расширения
   
 	
 	//Вкладка               
@@ -17,9 +17,22 @@ var core_default = {
   
 	"switch_theme": 1,                              //Список, выбранная тема
   
-	"check_new_navbar": true,				//Шапка на сайте заместо боковой авторизации
+	"check_auto_login": false,				        //Автоматический вход
+	"text_user_login": null,
+	"text_user_password": null,
+
+
+    //Кастомизация вкладки
+	"check_new_navbar": true,				        //Шапка на сайте заместо боковой авторизации
+    "check_new_login_page": true,				    //Новая страница авторизации
+    "check_new_error_page": true,				    //Новая страница при ошибке
+    "check_new_show_score": true,				    //Отображение оценки в 100 бальной системе, не полосочками
+    "check_theme_sync_accent_color": true,			//Accent color on domic.isu.ru
   
+
+
 	//Accent color
+    "check_accent_color_on_inputs": true,			//Accent color на полях для ввода (или стандартный)
 	"cpicker_r": 13,    
 	"cpicker_g": 110,    
 	"cpicker_b": 253,
@@ -29,13 +42,12 @@ var core_default = {
 	"check_layer": true,                            //Кнопка-переключатель, подложка
 	"text_loader": "",                              //Собственная gif-ка для загрузки
 	"switch_loader": 1,                             //Список, выбранная тема
-	"num_layer_delay": 1500,                        //Диапазон чисел, длительность перехода
-	"num_layer_fadeout": 1000,                      //Диапазон чисел, длительность затухания
+	"num_layer_delay": 800,                        //Диапазон чисел, длительность перехода
+	"num_layer_fadeout": 500,                      //Диапазон чисел, длительность затухания
   
   
 	//Анимации
 	"menu_rgb": false,                              //Переливание цветов
-	"menu_rotate_icon": false,                      //Крутящиеся иконки
   
   
 	//Уведомления
@@ -53,6 +65,7 @@ var core_default = {
 var 	nj = $.noConflict(true),
 	DTC_PORT = chrome.runtime.connect({name:"DTC_PORT"}),
 	jq_ready = false,
+	login_page = false,
 	OpenHomeworkPage = window.location.pathname,
 	original_title = "domic.isu.ru";
 
@@ -68,24 +81,42 @@ DTC_PORT.onMessage.addListener(function(m)
 		core_default = UserData;
 	}
 
-	core_start();
+	if(jq_ready == true)
+	{
+		core_start();
+	}
 });
 
 nj(document).ready(function() 
 {
-	if (OpenHomeworkPage == "/" && nj("input[name=\"nik\"]").length == 0)
+
+	jq_ready = true;
+
+	if (OpenHomeworkPage == "/")
 	{
-		window.location.replace("http://domic.isu.ru/student/");
-	}
-	else
-	{
-		if (OpenHomeworkPage == "/student/")
+
+		if (core_default.check_auto_login == true && core_default.text_user_login != null && core_default.text_user_password != null)
 		{
-			DeadlineList();
+			nj("input[name=\"nik\"]").val(window.atob(core_default.text_user_login));
+			nj("input[name=\"password\"]").val(window.atob(core_default.text_user_password));
+			nj("input[type=\"submit\"]").click();
 		}
-		jq_ready = true;
-		core_start();
+
+		login_page = true;
+
+		if (nj("input[name=\"nik\"]").length == 0)
+		{
+			window.location.replace("http://domic.isu.ru/student/");
+		}
+		
 	}
+
+	if (OpenHomeworkPage == "/student/")
+	{
+		DeadlineList();
+	}
+		
+	core_start();
 	
 	nj(document).keyup(function(e) 
 	{
@@ -117,12 +148,10 @@ function core_start()
 
 	if ( (page_entity != null && page_content != null && page_html != null) || (page_res != null && page_sim != null && page_html != null)  )
 	{
-		console.log("1");
 		fix_session();
 	}
 	else
 	{
-		console.log("2");
 		core_run();
 		fix_session();
 	}
@@ -133,13 +162,13 @@ function core_run()
 	if (core_default.check_ext == true)
 	{
 		core_apply();
-    }
+    	}
 	else
 	{
 		core_reset();
 	}
 
-	setTimeout(hide_load_layer, parseInt(core_default.num_layer_delay, 10));
+	
 }
 
 function core_reset()
@@ -154,12 +183,14 @@ function core_reset()
 	reset_theme();
 	
 	//CssFix();
+
+
+	setTimeout(hide_load_layer, parseInt(core_default.num_layer_delay, 10));
 }
 
 function core_apply()
 {
-	newNavBar();
-	if (core_default.check_new_navbar == true)
+	if (login_page == false && core_default.check_new_navbar == true)
 	{
 		//NewNavBar
 		newNavBar();
@@ -205,6 +236,8 @@ function core_apply()
 	{
 		reset_theme();
 	}
+
+	setTimeout(hide_load_layer, parseInt(core_default.num_layer_delay, 10));
 }
 
 
@@ -414,21 +447,25 @@ function fix_session()
 		var content = nj("#content p:nth-child(1)").text(),
 		content_min = content.replace(/[^a-zа-яёA-ZА-ЯЁ]/g, ''),
 		ses_out_text = "ВынеавторизованывсистемеПожалуйстаперейдитенастраницуавторизации";
-		if (content_min == ses_out_text && core_default.redirect_when_error == true)
+		if (content_min == ses_out_text)
 		{
-			if (nj("input[name=\"nik\"]").length == 0)
+			if (core_default.redirect_when_error == true)
 			{
-				window.location.replace("http://domic.isu.ru/student/");
+				if (nj("input[name=\"nik\"]").length == 0)
+				{
+					window.location.replace("http://domic.isu.ru/student/");
+				}
+				else
+				{
+					window.location.replace("http://domic.isu.ru/");
+				}
 			}
 			else
 			{
-				window.location.replace("http://domic.isu.ru/");
+				setTimeout(hide_load_layer, parseInt(core_default.num_layer_delay, 10));
 			}
 		}
-		else
-		{
-			setTimeout(hide_load_layer, parseInt(core_default.num_layer_delay, 10));
-		}
+		
 	}
 }
 
@@ -497,6 +534,17 @@ function newNavBar()
 
 	//nj("head #DomicStyle").remove();
 
+	if( nj("head #HideDefaultNavBar").length < 1)
+	{
+		var href_path = chrome.runtime.getURL("theme_changer/css/hideDefaultAuth.css");
+		nj('<link>', {
+				id: 'HideDefaultNavBar',
+				rel: 'stylesheet',
+				type: 'text/css',
+				href: href_path
+		}).prependTo('head');	
+	}
+
 	if( nj("head #NewNavBar").length < 1)
 	{
 		var href_path = chrome.runtime.getURL("theme_changer/css/NavMenu.css");
@@ -509,23 +557,26 @@ function newNavBar()
 		}).prependTo('head');	
 	}
 
-	if( nj("head #HideDefaultNavBar").length < 1)
-	{
-		var href_path = chrome.runtime.getURL("theme_changer/css/hideDefaultAuth.css");
-		nj('<link>', {
-				id: 'HideDefaultNavBar',
-				rel: 'stylesheet',
-				type: 'text/css',
-				href: href_path
-		}).prependTo('head');	
-	}
-
 	if( nj("body header").length < 1)
 	{
-		var compressed_html = '<header><nav class="fixed-top navbar navbar-dark navbar-expand-md"><div class=container-fluid><img alt=""id=logotype-navbar src=../../assets/icons/logo_128.png><div id=menu-phone class=dropdown><button aria-expanded=false class="btn btn-secondary dropdown-toggle"data-bs-toggle=dropdown id=dropdownMenu2 type=button>ИОС ДОМИК</button><ul class=dropdown-menu aria-labelledby=dropdownMenu2><li class=nav-item><a href=http://domic.isu.ru/student/ class=nav-link>Страница студента</a><li class=nav-item><a href=http://domic.isu.ru/res/sim/index.html class=nav-link>Симуляторы</a><li class=nav-item><a href=http://domic.isu.ru/logout.html class=nav-link>Выход</a></ul></div><div id=menu-pc id=navbarCollapse class="collapse navbar-collapse"><ul class="mb-2 mb-md-0 me-auto navbar-nav"><li class=nav-item><a href=http://domic.isu.ru/student/ class=nav-link>Страница студента</a><li class=nav-item><a href=http://domic.isu.ru/res/sim/index.html class=nav-link>Симуляторы</a></ul><div id=auth><p>Даниил Александрович Краев <span class=style-exit><a href=http://domic.isu.ru/logout.html>(Выход)</a></span></div></div></div></nav></header>';
-		nj("body").prepend( compressed_html );
+		var compressed_html = '<header><nav class="fixed-top navbar navbar-dark navbar-expand-md"><div class=container-fluid><img alt=""id=logotype-navbar src=../../assets/icons/logo_128.png><div id=menu-phone class=dropdown><button aria-expanded=false class="btn btn-secondary dropdown-toggle"data-bs-toggle=dropdown id=dropdownMenu2 type=button>Даниил Александрович Краев</button><ul class=dropdown-menu aria-labelledby=dropdownMenu2><li class=nav-item><a href=http://domic.isu.ru/student/ class=nav-link>Страница студента</a><li class=nav-item><a href=http://domic.isu.ru/res/sim/index.html class=nav-link>Симуляторы</a><li class=nav-item><span class=style-exit><a href=http://domic.isu.ru/logout.html class=nav-link>Выход</a></span></ul></div><div id=menu-pc id=navbarCollapse class="collapse navbar-collapse"><ul class="mb-2 mb-md-0 me-auto navbar-nav"><li class=nav-item><a href=http://domic.isu.ru/student/ class=nav-link>Страница студента</a><li class=nav-item><a href=http://domic.isu.ru/res/sim/index.html class=nav-link>Симуляторы</a></ul><div id=auth><p><span id=menu-pc-user>Даниил Александрович Краев</span> <span class=style-exit><a href=http://domic.isu.ru/logout.html>(Выход)</a></span></div></div></div></nav></header>';
+		nj("body").append( compressed_html );
+		nj("#logotype-navbar").attr("src", chrome.runtime.getURL("assets/icons/logo_128.png"));
+		getUserInfo();
 	}
+	
+
 	
 }
 
+function getUserInfo()
+{
+	var pattern = /[^а-яА-Я ]+/g;
+	var someWords = nj('#authorization').text().replace(pattern, ' ').split(/\s+ /);
+	var IOF = someWords[2].split(" ");
 
+	nj("#dropdownMenu2").text(IOF[2] + " " + IOF[0]);
+	nj("#menu-pc-user").text(IOF[2] + " " + IOF[0]);
+
+	console.log( IOF );
+}

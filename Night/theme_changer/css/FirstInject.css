@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@200;300;400;500&display=swap');
+
 #DTC-Window
 {
     position: absolute;
@@ -34,4 +36,10 @@
 .DTC-Window-light
 {
 	background-color: #fff;
+}
+
+header
+{
+    position: absolute;
+    z-index: 100;
 }

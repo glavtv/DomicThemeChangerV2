@@ -3,12 +3,16 @@ var useNotifications = false;
 
 var permissionResult = null;
 
-const askPermission = () => {
-    return new Promise((resolve, reject) => {
-      permissionResult = Notification.requestPermission((result) => {
+const askPermission = () => 
+{
+    return new Promise((resolve, reject) => 
+    {
+      permissionResult = Notification.requestPermission((result) => 
+      {
         resolve(result)
       })
-      if (permissionResult) {
+      if (permissionResult) 
+      {
         permissionResult.then(resolve, reject)
       }
     })
@@ -43,17 +47,10 @@ $(document).ready(function()
 
   });
 
-  $('#modalClose').on('click', function(e)
+  $('#modalClose, .btn-close').on('click', function(e)
 	{
     $( "#modal" ).fadeOut( "slow" );
     $( "#black-bg" ).fadeOut( "slow" );
   });
-
-  $(document).keyup(function(e) 
-	{
-		if (e.keyCode === 46) {
-			deadline_checker();
-		}
-	});
 
 });

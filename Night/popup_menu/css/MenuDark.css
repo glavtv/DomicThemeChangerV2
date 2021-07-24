@@ -1,4 +1,5 @@
-:root {
+:root 
+{
     --menu-body-bg: #242323;
     --menu-width: 300px;
     --menu-height: 450px;
@@ -10,8 +11,8 @@
     --h-selector-color: rgb(255, 0, 157);
     --h-selector-bg: #2E2D2D;
     --h-selector-icon-zoom: 46%;
-    --h-selector-active: #888888;
-    --h-selector-hover: #a0a0a0;
+    --h-selector-active: #232323;
+    --h-selector-hover: #474747;
 }
 
 * {
@@ -25,21 +26,21 @@
 
 html {
     -ms-overflow-style: none;
-    /* IE 10+ */
     scrollbar-width: none;
-    /* Firefox */
 }
 
 body {
     background-color: #3B3B3B !important;
 }
 
-select>option {
+select > option 
+{
     color: #000;
     font-size: 14px;
 }
 
-#Main-Window {
+#Main-Window 
+{
     overflow-x: hidden;
     width: var(--menu-width);
     height: var(--menu-height);
@@ -47,12 +48,10 @@ select>option {
     background-color: var(--menu-body-bg);
 }
 
-#Main-Window::-webkit-scrollbar {
-    /* chrome based */
+#Main-Window::-webkit-scrollbar 
+{
     width: 0px;
-    /* ширина scrollbar'a */
     background: transparent;
-    /* опционально */
     display: none;
 }
 
@@ -66,7 +65,7 @@ select>option {
     box-shadow: 0px -100px 60px 80px rgba(0, 0, 0, 0.7);
 }
 
-#Main-Head>div {
+#Main-Head > div {
     width: 25%;
     height: 49px;
     display: flex;

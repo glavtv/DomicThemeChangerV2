@@ -1,54 +1,91 @@
 var core_default = {
 
-    //Расширение (меню)
-    "check_ext": true,                              //Кнопка-переключатель, расширение     
-    "ext_theme": 1,                                 //Тема расширения 
-    "ext_ver": 2.3,                                 //Версия расширения
+	//Расширение (меню)
+	"check_ext": true,                              //Кнопка-переключатель, расширение     
+	"ext_theme": 1,                                 //Тема расширения 
+	"ext_ver": 2.39,                                //Версия расширения
+  
+	
+	//Вкладка               
+	"check_icon": true,                             //Кнопка-переключатель, иконка вкладки
+	"check_title": true,                            //Кнопка-переключатель, название вкладки
+	"check_theme": true,                            //Кнопка-переключатель, тема сайта
+  
+	"text_icon": "",                                //Текст, ссылка на иконку    
+	"text_title": "",                               //Текст, название вкладки
+	"text_theme": "",                               //Текст, ссылка на тему
+  
+	"switch_theme": 1,                              //Список, выбранная тема
+  
+	"check_auto_login": false,				        //Автоматический вход
+	"text_user_login": null,
+	"text_user_password": null,
 
 
-    //Вкладка               
-    "check_icon": true,                             //Кнопка-переключатель, иконка вкладки
-    "check_title": true,                            //Кнопка-переключатель, название вкладки
-    "check_theme": true,                            //Кнопка-переключатель, тема сайта
+    //Кастомизация вкладки
+	"check_new_navbar": true,				        //Шапка на сайте заместо боковой авторизации
+    "check_new_login_page": true,				    //Новая страница авторизации
+    "check_new_error_page": true,				    //Новая страница при ошибке
+    "check_new_show_score": true,				    //Отображение оценки в 100 бальной системе, не полосочками
+    "check_theme_sync_accent_color": true,			//Accent color on domic.isu.ru
+  
 
-    "text_icon": "",                                //Текст, ссылка на иконку    
-    "text_title": "",                               //Текст, название вкладки
-    "text_theme": "",                               //Текст, ссылка на тему
-
-    "switch_theme": 1,                              //Список, выбранная тема
-
-
-    //Accent color
-    "cpicker_r": 13,    
-    "cpicker_g": 110,    
-    "cpicker_b": 253,
-    
-
-    //Подложка
-    "check_layer": true,                            //Кнопка-переключатель, подложка
-    "text_loader": "",                              //Собственная gif-ка для загрузки
-    "switch_loader": 1,                             //Список, выбранная тема
-    "num_layer_delay": 1500,                        //Диапазон чисел, длительность перехода
-    "num_layer_fadeout": 1000,                      //Диапазон чисел, длительность затухания
-
-
-    //Анимации
-    "menu_rgb": false,                              //Переливание цветов
-    "menu_rotate_icon": false,                      //Крутящиеся иконки
-
-
-    //Уведомления
-    "notification_time_freq": 6,                    //частота оповещения
-    "notification_days_before_deadline": 3,         //дней до деда
-    "notification_repeat_max": 3,                   //кол-во повторений
-
-
-    //Фиксы через скрипты
-    "clean_demo": true,                             //Очищать поля DEMO
-    "redirect_when_error": true                     //Если выкинуло из сессии переходить автоматически на главную
+	//Accent color
+    "check_accent_color_on_inputs": true,			//Accent color на полях для ввода (или стандартный)
+	"cpicker_r": 13,    
+	"cpicker_g": 110,    
+	"cpicker_b": 253,
+	
+  
+	//Подложка
+	"check_layer": true,                            //Кнопка-переключатель, подложка
+	"text_loader": "",                              //Собственная gif-ка для загрузки
+	"switch_loader": 1,                             //Список, выбранная тема
+	"num_layer_delay": 800,                         //Диапазон чисел, длительность перехода
+	"num_layer_fadeout": 500,                       //Диапазон чисел, длительность затухания
+  
+  
+	//Анимации
+	"menu_rgb": false,                              //Переливание цветов
+  
+  
+	//Уведомления
+	"notification_time_freq": 6,                    //частота оповещения
+	"notification_days_before_deadline": 3,         //дней до деда
+	"notification_repeat_max": 3,                   //кол-во повторений
+  
+  
+	//Фиксы через скрипты
+	"clean_demo": true,                             //Очищать поля DEMO
+	"redirect_when_error": true                     //Если выкинуло из сессии переходить автоматически на главную
 };
 
-var RGB_CHECK = null;
+var ruleToBlock = 'input:not(#check_ext), select, button';
+
+
+preLoadStart();
+function preLoadStart()
+{
+    var data_ = JSON.parse(localStorage.getItem('DTC'));
+    var pl = document.getElementById("preLoad");
+    
+	if (data_ != null)
+    {
+        if ( data_.switch_theme == 2 || (data_.switch_theme > 2 && data_.ext_theme == 2) )
+        {
+            pl.classList.toggle("pl-dark");
+        }
+        else
+        {
+            pl.classList.toggle("pl-light");
+        }
+    }
+    else
+    {
+        pl.classList.toggle("pl-light");
+    }
+}
+
 
 $(document).ready(function() 
 {
@@ -62,30 +99,53 @@ $(document).ready(function()
 	{
         if ( $(this).attr('id') != '#Head-Selected-Block' )
         {
-            accent_reset();                                                     //Сбрасываем accent color с пункта меню
 
             $("#Head-Selected-Block").removeAttr("id");
             $(this).attr('id', 'Head-Selected-Block');
 
+
             $('#Main-Body > section').css( 'display', 'none' );                 //Скрываем все слои
             $('#Menu-' + $( this ).index()).css( 'display', ''  );              //Отображаем выбранный слой
 
-            if ($( this ).index() == 2)
+            if ($( this ).index() != 0)
             {
                 $('#Main-Body').css( 'padding-right', '30px' );
             }
             else
             {
-                $('#Main-Body').css( 'padding-right', ' ' );
+                $('#Main-Body').css( 'padding-right', '' );
             }
-
-            menu_animation_apply();                                             //Применяем анимацию для текущего пункта меню
-            accent_apply();                                                     //Примеяем accent color для текущего пункта меню
         }
 	});
 
+    $('#clearAuthData').on('click', function(e)
+	{
+        core_default.text_user_login = null;
+        core_default.text_user_password = null;
+        save();
+        $('#text_user_login').attr("placeholder", "Пусто");
+        $('#text_user_password').attr("placeholder", "Пусто");
+    });
+
     $(document).on("input",function(ev){
         save();
+    });
+
+    $('#text_user_login').focusout(function() 
+    {
+        if (core_default.text_user_login != "" && core_default.text_user_login != null)
+        {
+            $('#text_user_login').attr("placeholder", "Задано");
+            $('#text_user_login').val("");
+        }
+    });
+    $('#text_user_password').focusout(function() 
+    {
+        if (core_default.text_user_password != "" && core_default.text_user_password != null)
+        {
+            $('#text_user_password').attr("placeholder", "Задано");
+            $('#text_user_password').val("");
+        }
     });
 
 });
@@ -93,7 +153,8 @@ $(document).ready(function()
 function accent_text()
 {
     $( "#accent_text" ).text('Accent Color ('+ core_default.cpicker_r +'; '+ core_default.cpicker_g +'; '+ core_default.cpicker_b +')');
-    $( "#accent_color" ).css( 'background-color', 'rgb('+ core_default.cpicker_r +', '+ core_default.cpicker_g +', '+ core_default.cpicker_b +')' )
+    
+    accent_on_inputs();
     accent_apply();
 }
 
@@ -128,73 +189,98 @@ function num_text()
 
 function accent_apply()
 {
-    if (core_default.check_ext == true)
-    {
-        //Нижняя граница верхнего меню
-        $( "#Main-Head" ).css( 'border-bottom', '2px solid rgb('+ core_default.cpicker_r +', '+ core_default.cpicker_g +', '+ core_default.cpicker_b +')' );
+    $("head #menuStyle").remove();
 
-        //выделение иконки верхнего меню
-        $( "#Main-Head > #Head-Selected-Block > svg" ).css( 'stroke', 'rgb('+ core_default.cpicker_r +', '+ core_default.cpicker_g +', '+ core_default.cpicker_b +')' );
-        $( "#Main-Head > #Head-Selected-Block > svg" ).css( 'fill', 'rgb('+ core_default.cpicker_r +', '+ core_default.cpicker_g +', '+ core_default.cpicker_b +')' );
-    }
-    else
-    {
-        accent_reset();
-    }
-}
+    var r = core_default.cpicker_r,
+        g = core_default.cpicker_g,
+        b = core_default.cpicker_b;
 
-function accent_reset()
-{
-    //Нижняя граница верхнего меню
-    $( "#Main-Head" ).css( 'border-bottom', '2px solid rgb('+ 0 +', '+ 0 +', '+ 0 +')' );
+        if ( core_default.switch_theme == 2 || (core_default.switch_theme > 2 && core_default.ext_theme == 2) )
+        {
+            //тёмная тема
+            if ( (parseInt(r, 10) + parseInt(g, 10) + parseInt(b, 10)) <= 180)
+            {
+                r = 90;
+                g = 90;
+                b = 90;
+            }
+        }
+        else
+        {
+            //светлая тема
+            if ( (parseInt(r, 10) + parseInt(g, 10) + parseInt(b, 10)) >= 615 )
+            {
+                r = 205;
+                g = 205;
+                b = 205;
+            }
+        }
 
-    //выделение иконки верхнего меню
-    $( "#Main-Head > #Head-Selected-Block > svg" ).css( 'stroke', '' );
-    $( "#Main-Head > #Head-Selected-Block > svg" ).css( 'fill', '' );
+
+
+    var new_style = ""
+
+    + "#Main-Head"
+    + "{"
+    + "border-bottom: " + '2px solid rgb('+ r +', '+ g +', '+ b +');'
+    + "}"
+
+    + "#Main-Head > #Head-Selected-Block > svg"
+    + "{"
+    + "stroke: " + 'rgb('+ r +', '+ g +', '+ b +');'
+    + "fill: " + 'rgb('+ r +', '+ g +', '+ b +');'
+    + "}"
+    
+    ;
+
+    $('head').append('<style id="menuStyle" type="text/css">'+new_style+'</style>');
 }
 
 function menu_animation_apply()
 {
-    //TODO: RGB не сбрасывается под нижним меню, если выбрать другой пункт
-    $( "#Main-Head" ).removeAttr('class');
-    $( "#Main-Head > div > svg" ).removeClass('anim-RotateRGB anim-Rotate anim-RGB');
-    
+    var style_part_rgb = ""
+    + "#Main-Head"
+    + "{"
+    + "animation-name: " + 'BottomBorderRGB;'
+    + "animation-duration: " + '15s;'
+    + "animation-timing-function: " + 'linear;'
+    + "animation-delay: " + '0ms;'
+    + "animation-iteration-count: " + 'infinite;'
+    + "}"
 
-    if (core_default.menu_rotate_icon == true && core_default.menu_rgb == true)
-    {
-        RGB_CHECK = setInterval(setRGB, 150, 2);
-    }
-    else if (core_default.menu_rotate_icon == true)
-    {
-        $( "#Main-Head > #Head-Selected-Block > svg" ).addClass( 'anim-Rotate' );
-    }
-    else if (core_default.menu_rgb == true)
+    + "#Main-Head > div > svg"
+    + "{"
+    + "animation-name: " + 'RGBSVG;'
+    + "animation-duration: " + '15s;'
+    + "animation-timing-function: " + 'linear;'
+    + "animation-delay: " + '0ms;'
+    + "animation-iteration-count: " + 'infinite;'
+    + "}"
+    ;
+
+    var style_part_rgb_fix = ""
+    + "#Main-Head > div:not(#Head-Selected-Block) > svg"
+    + "{"
+    + "stroke: " + 'var(--h-selector-def) !important;'
+    + "fill: " + 'var(--h-selector-def) !important;'
+    + "}"
+    ;
+
+    
+    if (core_default.menu_rgb == true)
     { 
-        RGB_CHECK = setInterval(setRGB, 150, 1);
+        $('head').append('<style id="menuRGB" type="text/css">'+style_part_rgb+'</style>');
+        $('head').append('<style id="RGBFix" type="text/css">'+style_part_rgb_fix+'</style>');
+        
     }
-}
-
-function setRGB(menu)
-{
-    if (menu == 1)
+    else
     {
-        if ( $( "#Main-Head" ).attr('class') == null )
+        $("head #menuRGB").remove();
+        setTimeout( () => 
         {
-            $( "#Main-Head" ).attr( 'class', 'anim-Border-RGB' );
-            $( "#Main-Head > #Head-Selected-Block > svg" ).addClass( 'anim-RGB' );
-            RGB_CHECK = null;
-        }     
+            $("head #RGBFix").remove();
+        }, 500);
     }
-    else if (menu == 2)
-    {
-        if ( $( "#Main-Head" ).attr('class') == null )
-        {
-            $( "#Main-Head" ).attr( 'class', 'anim-Border-RGB' );
-            $( "#Main-Head > #Head-Selected-Block > svg" ).addClass( 'anim-RotateRGB' );
-            RGB_CHECK = null;
-        }     
-    }
-    
 }
 
 function load()
@@ -211,6 +297,16 @@ function load()
 
     //Анимации меню настроек
     menu_animation_apply();
+
+
+    setTimeout( () => 
+    {
+        $("#preLoad").fadeOut(300, function()
+        {
+            $("#preLoad").remove();
+        });
+    }, 150 )
+    
 }
 
 function refresh()
@@ -224,7 +320,6 @@ function refresh()
     core_default.check_layer = ($('#check_layer').is(":checked")) ? true : false;
 
     core_default.menu_rgb = ($('#menu_rgb').is(":checked")) ? true : false;
-    core_default.menu_rotate_icon = ($('#menu_rotate_icon').is(":checked")) ? true : false;
 
     core_default.text_icon = $('#text_icon').val();
     core_default.text_title = $('#text_title').val();
@@ -235,21 +330,32 @@ function refresh()
     core_default.switch_theme = $('#switch_theme').val();
     core_default.ext_theme = $('#ext_theme').val();
 
-    core_default.cpicker_r = $('#Menu-1 input[type="range"]:nth-child(2)').val();
-    core_default.cpicker_g = $('#Menu-1 input[type="range"]:nth-child(3)').val();
-    core_default.cpicker_b = $('#Menu-1 input[type="range"]:nth-child(4)').val();
+    core_default.cpicker_r = $('#cpicker_r').val();
+    core_default.cpicker_g = $('#cpicker_g').val();
+    core_default.cpicker_b = $('#cpicker_b').val();
 
-    core_default.num_layer_delay = $('#Menu-2 input[type="range"]:nth-child(2)').val();
-    core_default.num_layer_fadeout = $('#Menu-2 input[type="range"]:nth-child(4)').val();
+    core_default.num_layer_delay = $('#num_layer_delay').val();
+    core_default.num_layer_fadeout = $('#num_layer_fadeout').val();
 
     core_default.notification_days_before_deadline = $('#notification_days_before_deadline').val();
     core_default.notification_repeat_max = $('#notification_repeat_max').val();
     core_default.notification_time_freq = $('#notification_time_freq').val();
 
-
-
     core_default.clean_demo = ($('#clean_demo').is(":checked")) ? true : false;
     core_default.redirect_when_error = ($('#redirect_when_error').is(":checked")) ? true : false;
+    
+    core_default.check_auto_login = ($('#check_auto_login').is(":checked")) ? true : false;
+    core_default.check_new_navbar = ($('#check_new_navbar').is(":checked")) ? true : false;
+
+    if ($('#text_user_login').val() != "" && $('#text_user_login').val() != null && $('#text_user_login').val() != undefined)
+    {
+        core_default.text_user_login = window.btoa($('#text_user_login').val());
+    }
+
+    if ($('#text_user_password').val() != "" && $('#text_user_password').val() != null && $('#text_user_password').val() != undefined)
+    {
+        core_default.text_user_password = window.btoa($('#text_user_password').val());
+    }
 
     console.log("[DTC V2: Core]: Updated");
 }
@@ -257,13 +363,13 @@ function refresh()
 function save()
 {
     refresh();
+    num_text();
+    ext_theme_change();
+    accent_text();
+    menu_animation_apply();
 
     localStorage.setItem('DTC', JSON.stringify(core_default));
     console.log("[DTC V2: Core]: Saved");
-
-    num_text();
-    accent_text();
-    ext_theme_change();
 }
 
 function loadUD()
@@ -290,12 +396,12 @@ function loadUD()
         $('#switch_loader').val(Data.switch_loader);
         $('#ext_theme').val(Data.ext_theme);
 
-        $('#Menu-1 input[type="range"]:nth-child(2)').val(Data.cpicker_r);
-        $('#Menu-1 input[type="range"]:nth-child(3)').val(Data.cpicker_g);
-        $('#Menu-1 input[type="range"]:nth-child(4)').val(Data.cpicker_b);
+        $('#cpicker_r').val(Data.cpicker_r);
+        $('#cpicker_g').val(Data.cpicker_g);
+        $('#cpicker_b').val(Data.cpicker_b);
 
-        $('#Menu-2 input[type="range"]:nth-child(2)').val(Data.num_layer_delay);
-        $('#Menu-2 input[type="range"]:nth-child(4)').val(Data.num_layer_fadeout);
+        $('#num_layer_delay').val(Data.num_layer_delay);
+        $('#num_layer_fadeout').val(Data.num_layer_fadeout);
 
         $('#notification_days_before_deadline').val(Data.notification_days_before_deadline);
         $('#notification_repeat_max').val(Data.notification_repeat_max);
@@ -303,6 +409,21 @@ function loadUD()
 
         $('#clean_demo').prop('checked', Data.clean_demo);
         $('#redirect_when_error').prop('checked', Data.redirect_when_error);
+
+        $('#check_auto_login').prop('checked', Data.check_auto_login);
+        $('#check_new_navbar').prop('checked', Data.check_new_navbar);
+
+        if (Data.text_user_login != "" && Data.text_user_login != null)
+        {
+            core_default.text_user_login = Data.text_user_login;
+            $('#text_user_login').attr("placeholder", "Задано");
+        }
+    
+        if (Data.text_user_password != "" && Data.text_user_password != null)
+        {
+            core_default.text_user_password = Data.text_user_password;
+            $('#text_user_password').attr("placeholder", "Задано");
+        }
 
         console.log("[DTC V2: Core] Loaded");
 
@@ -319,50 +440,22 @@ function loadUD()
 
 function ext_disable()
 {
-    accent_reset();
+    $(ruleToBlock).each(function() {
+        $(this).attr('disabled', "yes");
+    });
 
-    $('#check_icon').attr('disabled', "yes");
-    $('#check_title').attr('disabled', "yes");
-    $('#check_theme').attr('disabled', "yes");
-    $('#check_layer').attr('disabled', "yes");
-
-    $('#menu_rgb').attr('disabled', "yes");
-    $('#menu_rotate_icon').attr('disabled', "yes");
-
-    $('#text_icon').attr('disabled', "yes");
-    $('#text_title').attr('disabled', "yes");
-    $('#text_theme').attr('disabled', "yes");
-	$('#text_loader').attr('disabled', "yes");
-
-    $('#switch_loader').attr('disabled', "yes");
-    $('#switch_theme').attr('disabled', "yes");
-    $('#ext_theme').attr('disabled', "yes");
-
-    $(".form-range").attr('disabled', "yes");
+    $('a[rel="external"]').css("pointer-events", "none");
 }
 
 function ext_enable()
 {
     accent_apply();
 
-    $('#check_icon').removeAttr('disabled');
-    $('#check_title').removeAttr('disabled');
-    $('#check_theme').removeAttr('disabled');
-    $('#check_layer').removeAttr('disabled');
+    $(ruleToBlock).each(function() {
+        $(this).removeAttr('disabled');
+    });
 
-    $('#menu_rgb').removeAttr('disabled');
-    $('#menu_rotate_icon').removeAttr('disabled');
-
-    $('#text_icon').removeAttr('disabled');
-    $('#text_title').removeAttr('disabled');
-    $('#text_theme').removeAttr('disabled');
-	$('#text_loader').removeAttr('disabled');
-
-    $('#switch_loader').removeAttr('disabled');
-    $('#switch_theme').removeAttr('disabled');
-    $('#ext_theme').removeAttr('disabled');
-
-    $(".form-range").removeAttr('disabled');
+    $('a[rel="external"]').css("pointer-events", "");
 }
 
 function ext_theme_change()
@@ -409,4 +502,105 @@ function ext_theme_change()
             break;
         }
     } 
+}
+
+function accent_on_inputs()
+{
+    $("head #accentInput").remove();
+
+    var r = core_default.cpicker_r,
+        g = core_default.cpicker_g,
+        b = core_default.cpicker_b,
+        new_style = "";
+
+   
+
+    if ( core_default.switch_theme == 2 || (core_default.switch_theme > 2 && core_default.ext_theme == 2) )
+    {
+        //тёмная тема
+
+        if ( (parseInt(r, 10) + parseInt(g, 10) + parseInt(b, 10)) <= 180)
+        {
+            r = 90;
+            g = 90;
+            b = 90;
+        }
+
+        new_style += ""
+
+        + ".form-switch .form-check-input:checked, .form-switch .form-check-input:focus:checked"
+        + "{"
+        + "background-image: " + "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%"+"0"+"'/%3e%3c/svg%3e\")"
+        + "}"
+
+        + ".form-check-input:not(:checked)"
+        + "{"
+        + "background-color: " + 'rgb(255, 255, 255);'
+        + "}"
+
+        + ".form-switch .form-check-input:not(:checked)"
+        + "{"
+        + "background-image: " + "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='"+"rgba("+0+","+0+","+0+", .5)"+"'/%3e%3c/svg%3e\")"
+        + "}"
+
+        ;
+    }
+    else
+    {
+        //светлая тема
+
+        if ( (parseInt(r, 10) + parseInt(g, 10) + parseInt(b, 10)) >= 615 )
+        {
+            r = 205;
+            g = 205;
+            b = 205;
+        }
+        
+        new_style += ""
+           
+        + ".form-switch .form-check-input:not(:checked)"
+        + "{"
+        + "background-image: " + "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='"+"rgba("+r+","+g+","+b+", .5)"+"'/%3e%3c/svg%3e\")"
+        + "}"
+   
+        ;
+    }
+
+    new_style += ""
+
+    + ".form-check-input:checked"
+    + "{"
+    + "background-color: " + 'rgb('+ r +', '+ g +', '+ b +');'
+    + "border-color: " + 'rgb('+ r +', '+ g +', '+ b +');'
+    + "}"
+
+    + ".form-check-input:focus"
+    + "{"
+    + "box-shadow: " + '0 0 0 .25rem rgba('+r+', '+g+', '+b+', .25);'
+    + "border-color: " + 'rgb('+ r +', '+ g +', '+ b +');'
+    + "}"
+
+
+
+    + "input[type=range]::-moz-range-thumb"
+    + "{"
+    + "background: " + 'rgb('+ r +', '+ g +', '+ b +');'
+    + "}"
+
+    + "input[type=range]:focus::-moz-range-thumb"
+    + "{"
+    + "box-shadow: " + '0 0 0 .25rem rgba('+r+', '+g+', '+b+', .25);'
+    + "}"
+
+
+    + "#accent_color"
+    + "{"
+    + "background-color: " + 'rgb('+ r +', '+ g +', '+ b +');'
+    + "}"
+
+    ;
+
+
+
+    $('head').append('<style id="accentInput" type="text/css">' + new_style + '</style>');
 }

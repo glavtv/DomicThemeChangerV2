@@ -3,7 +3,7 @@ var core_default = {
 	//Расширение (меню)
 	"check_ext": true,                              //Кнопка-переключатель, расширение     
 	"ext_theme": 1,                                 //Тема расширения 
-	"ext_ver": 2.3,                                 //Версия расширения
+	"ext_ver": 2.39,                                 //Версия расширения
   
 	
 	//Вкладка               
@@ -17,8 +17,22 @@ var core_default = {
   
 	"switch_theme": 1,                              //Список, выбранная тема
   
+	"check_auto_login": false,				        //Автоматический вход
+	"text_user_login": null,
+	"text_user_password": null,
+
+
+    //Кастомизация вкладки
+	"check_new_navbar": true,				        //Шапка на сайте заместо боковой авторизации
+    "check_new_login_page": true,				    //Новая страница авторизации
+    "check_new_error_page": true,				    //Новая страница при ошибке
+    "check_new_show_score": true,				    //Отображение оценки в 100 бальной системе, не полосочками
+    "check_theme_sync_accent_color": true,			//Accent color on domic.isu.ru
   
+
+
 	//Accent color
+    "check_accent_color_on_inputs": true,			//Accent color на полях для ввода (или стандартный)
 	"cpicker_r": 13,    
 	"cpicker_g": 110,    
 	"cpicker_b": 253,
@@ -28,13 +42,12 @@ var core_default = {
 	"check_layer": true,                            //Кнопка-переключатель, подложка
 	"text_loader": "",                              //Собственная gif-ка для загрузки
 	"switch_loader": 1,                             //Список, выбранная тема
-	"num_layer_delay": 1500,                        //Диапазон чисел, длительность перехода
-	"num_layer_fadeout": 1000,                      //Диапазон чисел, длительность затухания
+	"num_layer_delay": 800,                        //Диапазон чисел, длительность перехода
+	"num_layer_fadeout": 500,                      //Диапазон чисел, длительность затухания
   
   
 	//Анимации
 	"menu_rgb": false,                              //Переливание цветов
-	"menu_rotate_icon": false,                      //Крутящиеся иконки
   
   
 	//Уведомления
@@ -46,7 +59,7 @@ var core_default = {
 	//Фиксы через скрипты
 	"clean_demo": true,                             //Очищать поля DEMO
 	"redirect_when_error": true                     //Если выкинуло из сессии переходить автоматически на главную
-  };
+};
 
 var DTC_PORT;
 var checkDeadLines = null;

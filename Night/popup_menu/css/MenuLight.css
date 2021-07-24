@@ -10,8 +10,8 @@
     --h-selector-color: rgb(255, 77, 187);
     --h-selector-bg: #ffffff;
     --h-selector-icon-zoom: 46%;
-    --h-selector-active: #e6e6e6;
-    --h-selector-hover: #d3d3d3;
+    --h-selector-active: #eeeded;
+    --h-selector-hover: #dadada;
 }
 
 * {
